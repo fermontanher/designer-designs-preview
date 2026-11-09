@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+<title id="t">Designer Designs</title>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8913a"/><stop offset=".55" stop-color="#e9cf86"/><stop offset="1" stop-color="#f2e2a4"/></linearGradient></defs>
+<rect width="512" height="512" rx="80" fill="#0b0a08"/><g transform="translate(110.3 46.1) scale(0.9371)" fill="none" stroke="url(#g)" stroke-width="52" stroke-linecap="butt" stroke-linejoin="miter"><path d="M185 175 V9 H100 A92 117.5 0 0 0 100 244 H191"/><path d="M126 272 V439 H203 A95 117.5 0 0 0 203 204 H121"/></g></svg>
