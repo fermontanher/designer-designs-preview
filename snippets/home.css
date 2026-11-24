@@ -46,20 +46,20 @@
 .dd-steps__row strong{font:500 12px/1 var(--dd-sans);letter-spacing:.22em;text-transform:uppercase;color:var(--dd-cream)}
 .dd-steps__row span:last-child{font:400 14px/1.5 var(--dd-sans);color:rgba(243,236,224,.58)}
 /* 4 reviews */
-.dd-reviews{text-align:center;padding-top:clamp(56px,6vw,96px);padding-bottom:clamp(64px,7vw,110px);border-top:1px solid var(--dd-line)}
-.dd-reviews__stars{color:var(--dd-gold-2);letter-spacing:.5em;font-size:12px;margin:0 0 26px}
-.dd-reviews__stage{display:grid;max-width:760px;margin:0 auto}
-.dd-reviews__item{grid-area:1/1;margin:0;opacity:0;transform:translateY(10px);transition:opacity 900ms ease,transform 900ms cubic-bezier(.22,.61,.36,1);pointer-events:none}
-.dd-reviews__item.is-active{opacity:1;transform:none;pointer-events:auto}
-.dd-reviews__item blockquote{margin:0 0 22px;font:400 clamp(22px,2.2vw,32px)/1.4 var(--dd-serif);color:var(--dd-cream)}
-.dd-reviews__item figcaption{font:500 11px/1 var(--dd-sans);letter-spacing:.2em;text-transform:uppercase;color:rgba(243,236,224,.5)}
-.dd-reviews__src{font:400 12px/1 var(--dd-sans);color:rgba(243,236,224,.38);margin:26px 0 0}
-.dd-reviews__dots{display:flex;justify-content:center;gap:4px;margin-top:22px}
-.dd-reviews__dots button{background:none;border:0;padding:14px 4px;cursor:pointer}
-.dd-reviews__dots span{display:block;width:28px;height:1px;background:rgba(243,236,224,.25);position:relative;overflow:hidden}
-.dd-reviews__dots span::after{content:"";position:absolute;inset:0;background:var(--dd-gold-2);transform:scaleX(0);transform-origin:left}
-.dd-reviews__dots .is-active span::after{animation:ddRevBar 7s linear forwards}
-.dd-reviews.is-paused .dd-reviews__dots .is-active span::after{animation-play-state:paused}
+.dd-hrev{text-align:center;padding-top:clamp(56px,6vw,96px);padding-bottom:clamp(64px,7vw,110px);border-top:1px solid var(--dd-line)}
+.dd-hrev__stars{color:var(--dd-gold-2);letter-spacing:.5em;font-size:12px;margin:0 0 26px}
+.dd-hrev__stage{display:grid;max-width:760px;margin:0 auto}
+.dd-hrev__item{grid-area:1/1;margin:0;opacity:0;transform:translateY(10px);transition:opacity 900ms ease,transform 900ms cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.dd-hrev__item.is-active{opacity:1;transform:none;pointer-events:auto}
+.dd-hrev__item blockquote{margin:0 0 22px;font:400 clamp(22px,2.2vw,32px)/1.4 var(--dd-serif);color:var(--dd-cream)}
+.dd-hrev__item figcaption{font:500 11px/1 var(--dd-sans);letter-spacing:.2em;text-transform:uppercase;color:rgba(243,236,224,.5)}
+.dd-hrev__src{font:400 12px/1 var(--dd-sans);color:rgba(243,236,224,.38);margin:26px 0 0}
+.dd-hrev__dots{display:flex;justify-content:center;gap:4px;margin-top:22px}
+.dd-hrev__dots button{background:none;border:0;padding:14px 4px;cursor:pointer}
+.dd-hrev__dots span{display:block;width:28px;height:1px;background:rgba(243,236,224,.25);position:relative;overflow:hidden}
+.dd-hrev__dots span::after{content:"";position:absolute;inset:0;background:var(--dd-gold-2);transform:scaleX(0);transform-origin:left}
+.dd-hrev__dots .is-active span::after{animation:ddRevBar 7s linear forwards}
+.dd-hrev.is-paused .dd-hrev__dots .is-active span::after{animation-play-state:paused}
 @keyframes ddRevBar{to{transform:scaleX(1)}}
 @media (max-width:900px){
   .dd-promise-strip ul{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
@@ -74,5 +74,5 @@
 }
 @media (prefers-reduced-motion:reduce){
   .dd-js .dd-rv,.dd-js .dd-rv--clip,.dd-js .dd-rv--clip img{opacity:1;transform:none;clip-path:none;transition:none}
-  .dd-reviews__item{transition:none}.dd-reviews__dots .is-active span::after{animation:none;transform:scaleX(1)}
+  .dd-hrev__item{transition:none}.dd-hrev__dots .is-active span::after{animation:none;transform:scaleX(1)}
 }

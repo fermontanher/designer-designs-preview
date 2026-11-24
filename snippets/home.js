@@ -19,10 +19,10 @@
 	items.forEach(function (el) { io.observe(el); });
 })();
 (function () {
-	var box = document.querySelector('[data-dd-reviews]');
+	var box = document.querySelector('[data-dd-hrev]');
 	if (!box) { return; }
-	var slides = box.querySelectorAll('.dd-reviews__item');
-	var dots = box.querySelectorAll('.dd-reviews__dots button');
+	var slides = box.querySelectorAll('.dd-hrev__item');
+	var dots = box.querySelectorAll('.dd-hrev__dots button');
 	if (slides.length < 2) { return; }
 	var cur = 0, timer = null, reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	function go(n) {

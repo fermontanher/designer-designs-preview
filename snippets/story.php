@@ -54,19 +54,19 @@
 	}
 	?>
 	<?php if ( $dd_revs ) : ?>
-	<section class="dd-wrap dd-reviews dd-rv" aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Reviews from our Etsy shop', 'designer-designs' ); ?>" data-dd-reviews>
-		<p class="dd-reviews__stars" aria-hidden="true">★★★★★</p>
-		<div class="dd-reviews__stage">
+	<section class="dd-wrap dd-hrev dd-rv" aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Reviews from our Etsy shop', 'designer-designs' ); ?>" data-dd-hrev>
+		<p class="dd-hrev__stars" aria-hidden="true">★★★★★</p>
+		<div class="dd-hrev__stage">
 			<?php foreach ( $dd_revs as $dd_i => $dd_r ) : ?>
-				<figure class="dd-reviews__item<?php echo 0 === $dd_i ? ' is-active' : ''; ?>" aria-hidden="<?php echo 0 === $dd_i ? 'false' : 'true'; ?>">
+				<figure class="dd-hrev__item<?php echo 0 === $dd_i ? ' is-active' : ''; ?>" aria-hidden="<?php echo 0 === $dd_i ? 'false' : 'true'; ?>">
 					<blockquote>“<?php echo esc_html( $dd_r[0] ); ?>”</blockquote>
 					<figcaption><?php echo esc_html( implode( ' · ', array_filter( array( $dd_r[1] ?? '', $dd_r[2] ?? '' ) ) ) ); ?></figcaption>
 				</figure>
 			<?php endforeach; ?>
 		</div>
-		<p class="dd-reviews__src"><?php esc_html_e( 'Reviews from our Etsy shop', 'designer-designs' ); ?></p>
+		<p class="dd-hrev__src"><?php esc_html_e( 'Reviews from our Etsy shop', 'designer-designs' ); ?></p>
 		<?php if ( count( $dd_revs ) > 1 ) : ?>
-			<div class="dd-reviews__dots">
+			<div class="dd-hrev__dots">
 				<?php foreach ( $dd_revs as $dd_i => $dd_r ) : ?>
 					<button type="button" class="<?php echo 0 === $dd_i ? 'is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Review %d', 'designer-designs' ), $dd_i + 1 ) ); ?>"><span></span></button>
 				<?php endforeach; ?>
