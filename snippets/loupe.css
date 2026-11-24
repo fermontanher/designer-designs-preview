@@ -1,0 +1,11 @@
+
+/* 0.11.6 Piece of the month: magnifying loupe instead of whole-image zoom */
+.dd-potm__media.is-zoom img,.dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoom img{transform:scale(1.04)!important}
+@media (hover:hover) and (pointer:fine){
+  .dd-potm__media{position:relative;cursor:none}
+  .dd-loupe{position:absolute;left:0;top:0;z-index:3;width:var(--L,230px);height:var(--L,230px);margin:calc(var(--L,230px)/-2) 0 0 calc(var(--L,230px)/-2);border-radius:50%;pointer-events:none;background-repeat:no-repeat;background-color:#0b0a08;
+    box-shadow:0 0 0 1px rgba(216,181,106,.85),0 0 0 6px rgba(0,0,0,.14),0 24px 60px -10px rgba(0,0,0,.55);
+    opacity:0;scale:.55;transition:opacity 420ms cubic-bezier(.22,.61,.36,1),scale 620ms cubic-bezier(.22,.61,.36,1);will-change:transform}
+  .dd-loupe::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(120% 90% at 30% 20%,rgba(255,244,220,.16),rgba(255,244,220,0) 45%),radial-gradient(circle at 50% 50%,transparent 62%,rgba(0,0,0,.22) 100%)}
+  .dd-potm__media.is-loupe .dd-loupe{opacity:1;scale:1}
+}
