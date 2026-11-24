@@ -808,7 +808,7 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-feat__arrow--next{right:clamp(12px,2.5vw,36px)}
 .dd-feat__dots{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vw,28px);z-index:3;display:flex;justify-content:center;gap:6px}
 .dd-feat__dots button{width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.dd-feat__dots button::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(243,231,207,.45);transition:background 300ms ease-out,transform 300ms ease-out}
+.dd-feat__dots button::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(243,231,207,.6);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.5);transition:background 300ms ease-out,transform 300ms ease-out}
 .dd-feat__dots button[aria-current="true"]::before{background:var(--dd-champ);transform:scale(1.25)}
 @media (max-width:900px){
   .dd-feat__stage,.admin-bar .dd-feat__stage{height:auto;min-height:0;aspect-ratio:3/2}
