@@ -1,0 +1,9 @@
+
+/* 0.11.2 Piece of the month: hover loupe zoom (desktop, fine pointer) */
+@media (hover:hover) and (pointer:fine){
+  .dd-potm__media{cursor:zoom-in}
+  .dd-potm__media img{transform-origin:var(--zx,50%) var(--zy,50%)}
+  .dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoom img,.dd-potm__media.is-zoom img{transform:scale(2.1);transition:transform 650ms cubic-bezier(.22,.61,.36,1)}
+  .dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoomout img{transition:transform 650ms cubic-bezier(.22,.61,.36,1)}
+}
+@media (prefers-reduced-motion:reduce){.dd-potm__media.is-zoom img{transition:none!important}}
