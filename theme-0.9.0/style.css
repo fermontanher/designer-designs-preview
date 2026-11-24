@@ -770,7 +770,7 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-intro-curtain::after{display:none}
 .dd-curtain__seamwrap{-webkit-mask:none!important;mask:none!important;filter:drop-shadow(0 0 4px rgba(255,214,150,.9)) drop-shadow(0 0 18px rgba(240,190,110,.45))}
 .dd-curtain__seam--c{--draw:0%}
-.dd-curtain__ui{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(40px,7vh,72px);opacity:1;transform:none;bottom:auto;transition:opacity 500ms ease-out}
+.dd-curtain__ui{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(40px,7vh,72px);opacity:1;transform:none;top:0;right:0;bottom:0;left:0;transition:opacity 500ms ease-out}
 .dd-whisper{font:italic 400 clamp(19px,2vw,26px)/1.3 var(--dd-serif);color:#d9c79a;letter-spacing:.02em;text-align:center;padding:0 24px;min-height:1.3em}
 .dd-whisper span{opacity:0;filter:blur(6px);transition:opacity 900ms ease-out,filter 900ms ease-out}
 .dd-intro-curtain.is-awake .dd-whisper span{opacity:.82;filter:none}
@@ -792,15 +792,15 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 
 /* ---------- Featured pieces: one at a time, the list beside it ---------- */
 .dd-home{background:#000}
-.dd-feat{--dd-h:calc(100svh - 92px);display:grid;grid-template-columns:minmax(280px,30%) 1fr;align-items:center;gap:clamp(28px,4vw,72px);
+.dd-feat{--dd-h:calc(100svh - 118px);display:grid;grid-template-columns:minmax(280px,30%) 1fr;align-items:center;gap:clamp(28px,4vw,72px);
   min-height:max(560px,var(--dd-h));padding:clamp(20px,3vw,40px) var(--dd-pad);max-width:1760px;margin:0 auto}
-.dd-feat__stage{grid-column:2;grid-row:1;position:relative;aspect-ratio:3/2;max-height:calc(var(--dd-h) - 80px);width:100%;justify-self:center;overflow:hidden;background:#0b0908}
+.dd-feat__stage{grid-column:2;grid-row:1;position:relative;aspect-ratio:3/2;width:min(100%,calc((var(--dd-h) - 56px) * 1.5));justify-self:center;overflow:hidden;background:#0b0908}
 .dd-feat__slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1100ms var(--dd-ease),visibility 0s linear 1100ms}
 .dd-feat__slide.is-current{opacity:1;visibility:visible;transition:opacity 1100ms var(--dd-ease),visibility 0s}
 .dd-feat__slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.045);transition:transform 9s linear}
 .dd-feat__slide.is-current img{transform:scale(1)}
 .dd-feat.is-paused .dd-feat__slide.is-current img{transition-duration:1.2s}
-.dd-feat__text{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:clamp(28px,5vh,56px);opacity:0;transform:translateY(10px);transition:opacity 900ms ease-out 300ms,transform 900ms ease-out 300ms}
+.dd-feat__text{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:clamp(22px,4vh,48px);opacity:0;transform:translateY(10px);transition:opacity 900ms ease-out 300ms,transform 900ms ease-out 300ms}
 .dd-feat.is-on .dd-feat__text{opacity:1;transform:none}
 .dd-feat__kicker{display:flex;align-items:center;gap:14px;font:500 11px/1 var(--dd-sans);letter-spacing:.32em;text-transform:uppercase;color:var(--dd-gold-2)}
 .dd-feat__kicker::before{content:"";width:36px;height:1px;background:var(--dd-gold)}
@@ -814,7 +814,7 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-feat__cta{align-self:flex-start;display:inline-flex;gap:12px;align-items:center;margin-top:6px;padding:6px 0;min-height:44px;color:var(--dd-champ);font:500 12px/1 var(--dd-sans);letter-spacing:.26em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(230,201,138,.45);transition:gap 300ms var(--dd-ease),border-color 300ms ease-out}
 .dd-feat__cta:hover{gap:18px;border-color:var(--dd-champ)}
 .dd-feat__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid rgba(191,156,86,.18)}
-.dd-feat__list button{position:relative;display:flex;align-items:baseline;gap:16px;width:100%;min-height:44px;padding:11px 0;background:none;border:0;border-bottom:1px solid rgba(191,156,86,.18);cursor:pointer;text-align:left;color:#7d7468;transition:color 300ms ease-out}
+.dd-feat__list button{position:relative;display:flex;align-items:baseline;gap:16px;width:100%;min-height:44px;padding:clamp(8px,1.4vh,12px) 0;background:none;border:0;border-bottom:1px solid rgba(191,156,86,.18);cursor:pointer;text-align:left;color:#7d7468;transition:color 300ms ease-out}
 .dd-feat__num{font:500 11px var(--dd-sans);letter-spacing:.14em;color:inherit}
 .dd-feat__lname{font:400 17px/1.25 var(--dd-serif)}
 .dd-feat__list button:hover,.dd-feat__list button[aria-current="true"]{color:var(--dd-cream)}
@@ -857,7 +857,7 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 @media (max-width:640px){.dd-collections__item{grid-template-columns:1fr auto;gap:12px}.dd-collections__arrow{display:none}.dd-collections__note{font-size:13px}}
 
 /* ---------- One line about the work ---------- */
-.dd-creed{display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;padding:clamp(72px,10vw,140px) var(--dd-pad) clamp(96px,12vw,170px);border-top:1px solid rgba(191,156,86,.14)}
+.dd-creed{display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;padding:clamp(72px,9vw,128px) var(--dd-pad) clamp(72px,9vw,128px);border-top:1px solid rgba(191,156,86,.14)}
 .dd-creed img{width:36px;height:auto;opacity:.9}
 .dd-creed__line{font:italic 400 clamp(26px,3.2vw,44px)/1.25 var(--dd-serif);color:var(--dd-cream);max-width:22em}
 .dd-creed__link{font:500 12px/1 var(--dd-sans);letter-spacing:.26em;text-transform:uppercase;color:var(--dd-champ);text-decoration:none;border-bottom:1px solid rgba(230,201,138,.45);padding:12px 0}
@@ -895,3 +895,6 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
   .dd-gallery__thumbs::-webkit-scrollbar{display:none}
   .dd-thumb{flex:0 0 68px}
 }
+
+.admin-bar .dd-feat{--dd-h:calc(100svh - 150px)}
+@media (min-width:901px) and (max-height:820px){.dd-feat__line{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.dd-feat__name{font-size:clamp(30px,2.8vw,44px)}}

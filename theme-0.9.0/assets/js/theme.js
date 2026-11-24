@@ -350,9 +350,8 @@
 		}, { passive: true });
 		document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(timer); else restart(); });
 		function start() { if (started) return; started = true; restart(); }
-		if (box.classList.contains('is-on')) start();
-		document.addEventListener('dd:lit', start);
-		setTimeout(start, 600);
+		// Wait for the opening: the first piece must be the one revealed by the light.
+		if (box.classList.contains('is-on')) start(); else document.addEventListener('dd:lit', start);
 	})();
 
 	/* ---------------- Collections list: a quiet photo follows the pointer (desktop only) ---------------- */
