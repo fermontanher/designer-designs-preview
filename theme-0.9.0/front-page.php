@@ -7,7 +7,7 @@
  * 2. Featured pieces: full-width image slider, one landscape image at a time, no text (as
  *    on the client's cake site). Featured = WooCommerce "featured" products (the star
  *    in Products), in menu order. Rotates every 7s, pauses on hover/focus, swipes on touch.
- * Client 24/11: "five of our best sellers and that's it" — nothing else on the homepage.
+ * Client 24/11: "five of our best sellers and that's it" — full-width slider, then one row "Shop by category" (as on Cox & Cox), then the footer.
  *
  * @package designer-designs
  */
@@ -52,9 +52,17 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 		<h1 class="screen-reader-text"><?php echo esc_html( get_bloginfo( 'name' ) . ' – ' . get_bloginfo( 'description' ) ); ?></h1>
 		<div class="dd-feat__stage">
 			<?php foreach ( $dd_feat as $dd_i => $dd_p ) : ?>
-				<?php $dd_src = wp_get_attachment_image_url( $dd_p->get_image_id(), 'medium' ); ?>
-				<a class="dd-feat__slide<?php echo 0 === $dd_i ? ' is-current' : ''; ?>" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>" style="--dd-bg:url('<?php echo esc_url( $dd_src ); ?>')" data-dd-slide="<?php echo (int) $dd_i; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( sprintf( __( '%1$d of %2$d: %3$s', 'designer-designs' ), $dd_i + 1, count( $dd_feat ), $dd_p->get_name() ) ); ?>" <?php echo 0 === $dd_i ? '' : 'aria-hidden="true" tabindex="-1"'; ?>>
-					<?php echo wp_get_attachment_image( $dd_p->get_image_id(), 'full', false, array( 'alt' => $dd_p->get_name(), 'sizes' => '100vw', 'loading' => 0 === $dd_i ? 'eager' : 'lazy', 'fetchpriority' => 0 === $dd_i ? 'high' : 'auto' ) ); ?>
+				<?php
+				$dd_wide = (int) $dd_p->get_meta( '_dd_hero_wide' ); // Full-width image for desktop (expanded, product untouched).
+				$dd_img  = $dd_p->get_image_id();
+				?>
+				<a class="dd-feat__slide<?php echo 0 === $dd_i ? ' is-current' : ''; ?>" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>" data-dd-slide="<?php echo (int) $dd_i; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( sprintf( __( '%1$d of %2$d: %3$s', 'designer-designs' ), $dd_i + 1, count( $dd_feat ), $dd_p->get_name() ) ); ?>" <?php echo 0 === $dd_i ? '' : 'aria-hidden="true" tabindex="-1"'; ?>>
+					<picture>
+						<?php if ( $dd_wide ) : ?>
+							<source media="(min-width: 901px)" srcset="<?php echo esc_attr( wp_get_attachment_image_srcset( $dd_wide, 'full' ) ?: wp_get_attachment_image_url( $dd_wide, 'full' ) ); ?>" sizes="100vw">
+						<?php endif; ?>
+						<?php echo wp_get_attachment_image( $dd_img, 'full', false, array( 'alt' => $dd_p->get_name(), 'sizes' => '100vw', 'loading' => 0 === $dd_i ? 'eager' : 'lazy', 'fetchpriority' => 0 === $dd_i ? 'high' : 'auto' ) ); ?>
+					</picture>
 				</a>
 			<?php endforeach; ?>
 			<?php if ( count( $dd_feat ) > 1 ) : ?>
@@ -67,6 +75,26 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 				</div>
 			<?php endif; ?>
 		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php
+	/* Client 24/11 (video 7:50, Cox & Cox): after the banner, one quiet row "Shop by category", then stop. */
+	$dd_cats = array_values( array_filter( dd_nav_categories(), fn( $c ) => (int) $c->count > 0 ) );
+	?>
+	<?php if ( $dd_cats ) : ?>
+	<section class="dd-wrap dd-shopcat" aria-labelledby="dd-shopcat-title">
+		<h2 id="dd-shopcat-title" class="dd-shopcat__title"><?php echo wp_kses( __( 'Shop by <em>category</em>', 'designer-designs' ), array( 'em' => array() ) ); ?></h2>
+		<ul class="dd-shopcat__row" style="--n:<?php echo (int) count( $dd_cats ); ?>">
+			<?php foreach ( $dd_cats as $dd_cat ) : ?>
+				<li>
+					<a href="<?php echo esc_url( get_term_link( $dd_cat ) ); ?>">
+						<img src="<?php echo esc_url( dd_category_image( $dd_cat ) ); ?>" alt="" loading="lazy" width="480" height="600">
+						<span><?php echo esc_html( $dd_cat->name ); ?></span>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 	</section>
 	<?php endif; ?>
 
