@@ -7,8 +7,7 @@
  * 2. Featured pieces: full-width image slider, one landscape image at a time, no text (as
  *    on the client's cake site). Featured = WooCommerce "featured" products (the star
  *    in Products), in menu order. Rotates every 7s, pauses on hover/focus, swipes on touch.
- * 3. The collections as a quiet list.
- * 4. One line about the work.
+ * Client 24/11: "five of our best sellers and that's it" — nothing else on the homepage.
  *
  * @package designer-designs
  */
@@ -70,32 +69,6 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 		</div>
 	</section>
 	<?php endif; ?>
-
-	<?php $dd_cats = dd_nav_categories(); ?>
-	<?php if ( $dd_cats ) : ?>
-	<section class="dd-wrap dd-collections" aria-labelledby="dd-col-title" data-dd-collections>
-		<h2 id="dd-col-title" class="dd-collections__title"><?php esc_html_e( 'The collections', 'designer-designs' ); ?></h2>
-		<ul class="dd-collections__list">
-			<?php foreach ( $dd_cats as $dd_cat ) : ?>
-				<?php $dd_soon = dd_category_soon( $dd_cat ) || 0 === (int) $dd_cat->count; ?>
-				<li>
-					<a class="dd-collections__item<?php echo $dd_soon ? ' is-soon' : ''; ?>" href="<?php echo esc_url( get_term_link( $dd_cat ) ); ?>" data-img="<?php echo esc_url( dd_category_image( $dd_cat ) ); ?>">
-						<span class="dd-collections__name"><?php echo esc_html( $dd_cat->name ); ?></span>
-						<span class="dd-collections__note"><?php echo esc_html( $dd_soon ? __( 'Coming soon', 'designer-designs' ) : dd_category_note( $dd_cat ) ); ?></span>
-						<span class="dd-collections__arrow" aria-hidden="true">→</span>
-					</a>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-		<img class="dd-collections__peek" data-dd-peek alt="" hidden>
-	</section>
-	<?php endif; ?>
-
-	<section class="dd-creed" aria-label="<?php esc_attr_e( 'About the work', 'designer-designs' ); ?>">
-		<img src="<?php echo dd_img( 'logo-symbol-gold.png' ); // phpcs:ignore ?>" alt="" width="44" height="64" loading="lazy">
-		<p class="dd-creed__line"><?php esc_html_e( 'Every crack, ridge and fold is left on purpose. That is where the light lives.', 'designer-designs' ); ?></p>
-		<a class="dd-creed__link" href="<?php echo esc_url( $dd_shop ); ?>"><?php esc_html_e( 'See every piece', 'designer-designs' ); ?></a>
-	</section>
 
 </main>
 <?php

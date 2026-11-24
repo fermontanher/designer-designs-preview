@@ -41,9 +41,24 @@ if ( ! $dd_meta && $product->is_type( 'variable' ) ) {
 			<span class="onsale" style="position:absolute;right:12px;top:12px"><?php esc_html_e( 'Offer', 'designer-designs' ); ?></span>
 		<?php endif; ?>
 	</div>
-	<div class="dd-card__row">
+	<?php
+	/* Client 24/11: card text as on monoaurel.com — pale category line, name, one small line, then price and "View the piece" on one row. */
+	$dd_terms = get_the_terms( $product->get_id(), 'product_cat' );
+	$dd_kick  = '';
+	if ( $dd_terms && ! is_wp_error( $dd_terms ) ) {
+		usort( $dd_terms, fn( $a, $b ) => $b->parent <=> $a->parent );
+		$dd_kick = $dd_terms[0]->name;
+	}
+	?>
+	<div class="dd-card__text">
+		<?php if ( $dd_kick ) : ?>
+			<p class="dd-card__kicker"><?php echo esc_html( $dd_kick ); ?></p>
+		<?php endif; ?>
 		<h3 class="woocommerce-loop-product__title"><a href="<?php echo esc_url( $product->get_permalink() ); ?>"><?php echo esc_html( $product->get_name() ); ?></a></h3>
-		<span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+		<p class="dd-card__made"><?php esc_html_e( 'Made to order · Handmade in London', 'designer-designs' ); ?></p>
+		<div class="dd-card__foot">
+			<span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+			<a class="dd-card__view" href="<?php echo esc_url( $product->get_permalink() ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'View the piece: %s', 'designer-designs' ), $product->get_name() ) ); ?>"><?php esc_html_e( 'View the piece', 'designer-designs' ); ?><span aria-hidden="true">→</span></a>
+		</div>
 	</div>
-	<a class="dd-card__view" href="<?php echo esc_url( $product->get_permalink() ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'View the piece: %s', 'designer-designs' ), $product->get_name() ) ); ?>"><?php esc_html_e( 'View the piece', 'designer-designs' ); ?><span aria-hidden="true">→</span></a>
 </li>

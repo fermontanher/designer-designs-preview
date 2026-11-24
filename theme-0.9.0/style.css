@@ -3,7 +3,7 @@ Theme Name: Designer Designs
 Theme URI: https://designerdesigns.studio
 Author: Fernanda Montanher
 Description: Black-and-gold WooCommerce theme for Designer Designs Studio — handmade homeware from London. Lamplight hero that follows the cursor, mega menu with product photos, basket drawer with free-delivery progress and "Add a little extra" suggestions.
-Version: 0.9.2
+Version: 0.9.4
 Requires at least: 6.6
 Requires PHP: 8.0
 WC requires at least: 9.0
@@ -876,3 +876,14 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
   .dd-thumb{flex:0 0 68px}
 }
 
+
+/* ---------- 0.9.4 Product card text as on monoaurel.com ---------- */
+.dd-card__text{display:flex;flex-direction:column;gap:6px;padding-top:4px}
+.dd-card__kicker{font:500 10.5px/1.3 var(--dd-sans);letter-spacing:.22em;text-transform:uppercase;color:#8a8073}
+.dd-card__text .woocommerce-loop-product__title{margin:0}
+.dd-card__made{font:400 10.5px/1.4 var(--dd-sans);letter-spacing:.16em;text-transform:uppercase;color:#7d7468}
+.dd-card__foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:6px}
+.dd-card__foot .price{margin:0}
+.dd-card__foot .dd-card__view{margin:0}
+.dd-buy__kicker{font:500 11px/1.3 var(--dd-sans)!important;letter-spacing:.24em!important;text-transform:uppercase;color:#8a8073!important;margin-bottom:4px}
+.dd-home{min-height:0}
