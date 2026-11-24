@@ -3,7 +3,7 @@ Theme Name: Designer Designs
 Theme URI: https://designerdesigns.studio
 Author: Fernanda Montanher
 Description: Black-and-gold WooCommerce theme for Designer Designs Studio — handmade homeware from London. Lamplight hero that follows the cursor, mega menu with product photos, basket drawer with free-delivery progress and "Add a little extra" suggestions.
-Version: 0.9.0
+Version: 0.9.2
 Requires at least: 6.6
 Requires PHP: 8.0
 WC requires at least: 9.0
@@ -790,53 +790,33 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-intro-curtain.is-go .dd-curtain__ui,.dd-intro-curtain.is-go .dd-curtain__skip{opacity:0;pointer-events:none}
 .dd-intro-curtain.is-flare .dd-curtain__seamwrap{filter:drop-shadow(0 0 10px rgba(255,226,160,1)) drop-shadow(0 0 48px rgba(255,190,110,.9))}
 
-/* ---------- Featured pieces: one at a time, the list beside it ---------- */
+/* ---------- Featured pieces: full-width image slider, no text (client video 24/11) ---------- */
 .dd-home{background:#000}
-.dd-feat{--dd-h:calc(100svh - 118px);display:grid;grid-template-columns:minmax(280px,30%) 1fr;align-items:center;gap:clamp(28px,4vw,72px);
-  min-height:max(560px,var(--dd-h));padding:clamp(20px,3vw,40px) var(--dd-pad);max-width:1760px;margin:0 auto}
-.dd-feat__stage{grid-column:2;grid-row:1;position:relative;aspect-ratio:3/2;width:min(100%,calc((var(--dd-h) - 56px) * 1.5));justify-self:center;overflow:hidden;background:#0b0908}
-.dd-feat__slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1100ms var(--dd-ease),visibility 0s linear 1100ms}
+.dd-feat{position:relative;background:#000}
+.dd-feat__stage{position:relative;width:100%;height:min(calc(100svh - 118px),56.25vw);min-height:420px;overflow:hidden;background:#000}
+.admin-bar .dd-feat__stage{height:min(calc(100svh - 150px),56.25vw)}
+.dd-feat__slide{position:absolute;inset:0;display:block;opacity:0;visibility:hidden;transition:opacity 1100ms var(--dd-ease),visibility 0s linear 1100ms}
 .dd-feat__slide.is-current{opacity:1;visibility:visible;transition:opacity 1100ms var(--dd-ease),visibility 0s}
-.dd-feat__slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.045);transition:transform 9s linear}
+/* The dark sides: the same photo, blurred and darkened, behind the centred landscape image. */
+.dd-feat__slide::before{content:"";position:absolute;inset:-40px;background:var(--dd-bg) center/cover no-repeat;filter:blur(36px) brightness(.32) saturate(.8);transform:scale(1.1)}
+.dd-feat__slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 18%,rgba(0,0,0,0) 82%,rgba(0,0,0,.55))}
+.dd-feat__slide img{position:relative;z-index:1;display:block;height:100%;width:auto;max-width:100%;margin:0 auto;object-fit:contain;aspect-ratio:3/2;transform:scale(1.03);transition:transform 8s linear}
 .dd-feat__slide.is-current img{transform:scale(1)}
-.dd-feat.is-paused .dd-feat__slide.is-current img{transition-duration:1.2s}
-.dd-feat__text{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:clamp(22px,4vh,48px);opacity:0;transform:translateY(10px);transition:opacity 900ms ease-out 300ms,transform 900ms ease-out 300ms}
-.dd-feat.is-on .dd-feat__text{opacity:1;transform:none}
-.dd-feat__kicker{display:flex;align-items:center;gap:14px;font:500 11px/1 var(--dd-sans);letter-spacing:.32em;text-transform:uppercase;color:var(--dd-gold-2)}
-.dd-feat__kicker::before{content:"";width:36px;height:1px;background:var(--dd-gold)}
-.dd-feat__now{display:grid}
-.dd-feat__info{grid-area:1/1;display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(8px);transition:opacity 700ms ease-out,transform 700ms ease-out}
-.dd-feat__info.is-current{opacity:1;transform:none}
-.dd-feat__name{font-size:clamp(34px,3.2vw,52px);line-height:1.02;letter-spacing:-.005em}
-.dd-feat__name a{color:var(--dd-cream);text-decoration:none}
-.dd-feat__line{font-size:15px;line-height:1.65;color:#b9ad9b;max-width:30em}
-.dd-feat__price{font:400 17px var(--dd-sans);color:var(--dd-gold-text)}
-.dd-feat__cta{align-self:flex-start;display:inline-flex;gap:12px;align-items:center;margin-top:6px;padding:6px 0;min-height:44px;color:var(--dd-champ);font:500 12px/1 var(--dd-sans);letter-spacing:.26em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(230,201,138,.45);transition:gap 300ms var(--dd-ease),border-color 300ms ease-out}
-.dd-feat__cta:hover{gap:18px;border-color:var(--dd-champ)}
-.dd-feat__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid rgba(191,156,86,.18)}
-.dd-feat__list button{position:relative;display:flex;align-items:baseline;gap:16px;width:100%;min-height:44px;padding:clamp(8px,1.4vh,12px) 0;background:none;border:0;border-bottom:1px solid rgba(191,156,86,.18);cursor:pointer;text-align:left;color:#7d7468;transition:color 300ms ease-out}
-.dd-feat__num{font:500 11px var(--dd-sans);letter-spacing:.14em;color:inherit}
-.dd-feat__lname{font:400 17px/1.25 var(--dd-serif)}
-.dd-feat__list button:hover,.dd-feat__list button[aria-current="true"]{color:var(--dd-cream)}
-.dd-feat__list button[aria-current="true"] .dd-feat__num{color:var(--dd-gold-2)}
-.dd-feat__bar{position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--dd-gold-2)}
-.dd-feat.is-timing .dd-feat__list button[aria-current="true"] .dd-feat__bar{animation:ddBar var(--dd-dur,7s) linear forwards}
-.dd-feat.is-paused .dd-feat__list button[aria-current="true"] .dd-feat__bar{animation-play-state:paused}
-@keyframes ddBar{from{width:0}to{width:100%}}
+.dd-feat__arrow{position:absolute;top:50%;z-index:3;width:52px;height:52px;margin-top:-26px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:rgba(0,0,0,.35);color:#f3e7cf;cursor:pointer;opacity:.75;transition:opacity 300ms ease-out,background 300ms ease-out}
+.dd-feat__arrow:hover,.dd-feat__arrow:focus-visible{opacity:1;background:rgba(0,0,0,.6)}
+.dd-feat__arrow--prev{left:clamp(12px,2.5vw,36px)}
+.dd-feat__arrow--next{right:clamp(12px,2.5vw,36px)}
+.dd-feat__dots{position:absolute;left:0;right:0;bottom:clamp(14px,2.4vw,28px);z-index:3;display:flex;justify-content:center;gap:6px}
+.dd-feat__dots button{width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.dd-feat__dots button::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(243,231,207,.45);transition:background 300ms ease-out,transform 300ms ease-out}
+.dd-feat__dots button[aria-current="true"]::before{background:var(--dd-champ);transform:scale(1.25)}
 @media (max-width:900px){
-  .dd-feat{grid-template-columns:1fr;min-height:0;padding:0 0 clamp(36px,8vw,56px);gap:24px}
-  .dd-feat__stage{grid-column:1;grid-row:1;aspect-ratio:4/5;max-height:72svh}
-  .dd-feat__text{grid-column:1;grid-row:2;padding:0 var(--dd-pad);gap:26px}
-  .dd-feat__kicker{display:none}
-  .dd-feat__name{font-size:clamp(30px,8vw,40px)}
-  .dd-feat__list{flex-direction:row;gap:8px;border:0}
-  .dd-feat__list li{flex:1}
-  .dd-feat__list button{min-height:32px;padding:14px 0;border-bottom:1px solid rgba(191,156,86,.25)}
-  .dd-feat__num,.dd-feat__lname{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
-  .dd-feat__list button[aria-current="true"]{border-bottom-color:rgba(230,201,138,.5)}
-  .dd-feat__bar{bottom:-1px}
+  .dd-feat__stage,.admin-bar .dd-feat__stage{height:auto;min-height:0;aspect-ratio:3/2}
+  .dd-feat__slide img{width:100%;height:100%;object-fit:cover}
+  .dd-feat__slide::before,.dd-feat__slide::after{display:none}
+  .dd-feat__arrow{width:40px;height:40px;margin-top:-20px}
 }
-@media (prefers-reduced-motion:reduce){.dd-feat__slide img{transition:none;transform:none}.dd-feat__bar{display:none}}
+@media (prefers-reduced-motion:reduce){.dd-feat__slide img{transition:none;transform:none}}
 
 /* ---------- The collections: a quiet list ---------- */
 .dd-collections{position:relative;padding-top:clamp(72px,10vw,140px);padding-bottom:clamp(72px,10vw,140px);max-width:1200px}
@@ -896,5 +876,3 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
   .dd-thumb{flex:0 0 68px}
 }
 
-.admin-bar .dd-feat{--dd-h:calc(100svh - 150px)}
-@media (min-width:901px) and (max-height:820px){.dd-feat__line{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.dd-feat__name{font-size:clamp(30px,2.8vw,44px)}}

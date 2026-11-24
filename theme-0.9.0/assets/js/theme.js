@@ -307,50 +307,46 @@
 		window.addEventListener('touchmove', onGesture, { passive: true });
 	})();
 
-	/* ---------------- Featured pieces: one at a time, list beside it ---------------- */
+	/* ---------------- Featured pieces: image slider, one at a time, arrows + dots + swipe ---------------- */
 	(function () {
 		var box = qs('[data-dd-feat]');
 		if (!box) return;
-		var slides = qsa('[data-dd-slide]', box), infos = qsa('[data-dd-info]', box), btns = qsa('[data-dd-go]', box);
-		var n = slides.length, cur = 0, timer = null, paused = false, started = false, DUR = 7000;
+		var slides = qsa('[data-dd-slide]', box), dots = qsa('[data-dd-go]', box);
+		var n = slides.length, cur = 0, timer = null, paused = false, started = false, DUR = 6000;
 		if (n < 2) return;
-		box.style.setProperty('--dd-dur', DUR + 'ms');
-		function go(i, user) {
+		function go(i) {
 			i = (i + n) % n;
 			if (i === cur) return;
 			slides[cur].classList.remove('is-current'); slides[cur].setAttribute('aria-hidden', 'true'); slides[cur].setAttribute('tabindex', '-1');
-			infos[cur].classList.remove('is-current'); infos[cur].hidden = true;
-			if (btns[cur]) btns[cur].setAttribute('aria-current', 'false');
+			if (dots[cur]) dots[cur].setAttribute('aria-current', 'false');
 			cur = i;
 			slides[cur].classList.add('is-current'); slides[cur].removeAttribute('aria-hidden'); slides[cur].removeAttribute('tabindex');
-			infos[cur].hidden = false; requestAnimationFrame(function () { infos[cur].classList.add('is-current'); });
-			if (btns[cur]) btns[cur].setAttribute('aria-current', 'true');
+			if (dots[cur]) dots[cur].setAttribute('aria-current', 'true');
 			restart();
 		}
 		function restart() {
 			clearTimeout(timer);
-			box.classList.remove('is-timing'); void box.offsetWidth;
 			if (reduce || paused || !started) return;
-			box.classList.add('is-timing');
 			timer = setTimeout(function () { go(cur + 1); }, DUR);
 		}
-		btns.forEach(function (b) { b.addEventListener('click', function () { go(+b.dataset.ddGo, true); }); });
-		['mouseenter', 'focusin'].forEach(function (e) { box.addEventListener(e, function () { paused = true; box.classList.add('is-paused'); clearTimeout(timer); }); });
-		['mouseleave', 'focusout'].forEach(function (e) { box.addEventListener(e, function (ev) { if (ev.type === 'focusout' && box.contains(ev.relatedTarget)) return; paused = false; box.classList.remove('is-paused'); restart(); }); });
+		dots.forEach(function (b) { b.addEventListener('click', function () { go(+b.dataset.ddGo); }); });
+		var prev = qs('[data-dd-prev]', box), next = qs('[data-dd-next]', box);
+		if (prev) prev.addEventListener('click', function () { go(cur - 1); });
+		if (next) next.addEventListener('click', function () { go(cur + 1); });
+		['mouseenter', 'focusin'].forEach(function (e) { box.addEventListener(e, function () { paused = true; clearTimeout(timer); }); });
+		['mouseleave', 'focusout'].forEach(function (e) { box.addEventListener(e, function (ev) { if (ev.type === 'focusout' && box.contains(ev.relatedTarget)) return; paused = false; restart(); }); });
 		box.addEventListener('keydown', function (e) {
-			if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
-			if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+			if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+			if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
 		});
-		// Swipe on touch screens.
 		var sx = 0, sy = 0, stage = qs('.dd-feat__stage', box);
 		stage.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
 		stage.addEventListener('touchend', function (e) {
 			var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-			if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { paused = false; go(cur + (dx < 0 ? 1 : -1), true); }
+			if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { paused = false; go(cur + (dx < 0 ? 1 : -1)); }
 		}, { passive: true });
 		document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(timer); else restart(); });
 		function start() { if (started) return; started = true; restart(); }
-		// Wait for the opening: the first piece must be the one revealed by the light.
 		if (box.classList.contains('is-on')) start(); else document.addEventListener('dd:lit', start);
 	})();
 

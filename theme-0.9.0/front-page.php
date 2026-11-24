@@ -4,8 +4,8 @@
  *
  * 1. Opening: a completely black screen with a single point of light. Touching it
  *    draws the gold crack, the dark surface breaks open and the light reveals the first piece.
- * 2. Featured pieces: one landscape image at a time (the "star of the show"), with the
- *    list of featured pieces beside it. Featured = WooCommerce "featured" products (the star
+ * 2. Featured pieces: full-width image slider, one landscape image at a time, no text (as
+ *    on the client's cake site). Featured = WooCommerce "featured" products (the star
  *    in Products), in menu order. Rotates every 7s, pauses on hover/focus, swipes on touch.
  * 3. The collections as a quiet list.
  * 4. One line about the work.
@@ -22,14 +22,6 @@ $dd_feat = array_values( array_filter( $dd_feat, fn( $p ) => $p->get_image_id() 
 if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 	$dd_feat = wc_get_products( array( 'status' => 'publish', 'limit' => 5, 'orderby' => 'menu_order', 'order' => 'ASC' ) );
 }
-/** First sentence of the short description, for the line under the name. */
-$dd_line = function ( $p ) {
-	$t = trim( wp_strip_all_tags( $p->get_short_description() ) );
-	if ( preg_match( '/^(.{20,220}?[.!?])(\s|$)/u', $t, $m ) ) {
-		return $m[1];
-	}
-	return wp_trim_words( $t, 24 );
-};
 ?>
 <main id="main" class="dd-home">
 
@@ -56,36 +48,24 @@ $dd_line = function ( $p ) {
 	</div>
 
 	<?php if ( $dd_feat ) : ?>
+	<?php /* Client 24/11 (video): image slider like designercakesoflondon.co.uk. One landscape image at a time, no text. Dark sides, arrows, dots. */ ?>
 	<section class="dd-feat" data-dd-hero data-dd-feat aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Featured pieces', 'designer-designs' ); ?>">
 		<h1 class="screen-reader-text"><?php echo esc_html( get_bloginfo( 'name' ) . ' – ' . get_bloginfo( 'description' ) ); ?></h1>
 		<div class="dd-feat__stage">
 			<?php foreach ( $dd_feat as $dd_i => $dd_p ) : ?>
-				<a class="dd-feat__slide<?php echo 0 === $dd_i ? ' is-current' : ''; ?>" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>" data-dd-slide="<?php echo (int) $dd_i; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( sprintf( __( '%1$d of %2$d: %3$s', 'designer-designs' ), $dd_i + 1, count( $dd_feat ), $dd_p->get_name() ) ); ?>" <?php echo 0 === $dd_i ? '' : 'aria-hidden="true" tabindex="-1"'; ?>>
-					<?php echo wp_get_attachment_image( $dd_p->get_image_id(), 'full', false, array( 'alt' => $dd_p->get_name(), 'sizes' => '(max-width: 900px) 100vw, 72vw', 'loading' => 0 === $dd_i ? 'eager' : 'lazy', 'fetchpriority' => 0 === $dd_i ? 'high' : 'auto' ) ); ?>
+				<?php $dd_src = wp_get_attachment_image_url( $dd_p->get_image_id(), 'medium' ); ?>
+				<a class="dd-feat__slide<?php echo 0 === $dd_i ? ' is-current' : ''; ?>" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>" style="--dd-bg:url('<?php echo esc_url( $dd_src ); ?>')" data-dd-slide="<?php echo (int) $dd_i; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( sprintf( __( '%1$d of %2$d: %3$s', 'designer-designs' ), $dd_i + 1, count( $dd_feat ), $dd_p->get_name() ) ); ?>" <?php echo 0 === $dd_i ? '' : 'aria-hidden="true" tabindex="-1"'; ?>>
+					<?php echo wp_get_attachment_image( $dd_p->get_image_id(), 'full', false, array( 'alt' => $dd_p->get_name(), 'sizes' => '100vw', 'loading' => 0 === $dd_i ? 'eager' : 'lazy', 'fetchpriority' => 0 === $dd_i ? 'high' : 'auto' ) ); ?>
 				</a>
 			<?php endforeach; ?>
-		</div>
-
-		<div class="dd-feat__text">
-			<p class="dd-feat__kicker"><?php esc_html_e( 'Most loved', 'designer-designs' ); ?></p>
-			<div class="dd-feat__now" aria-live="polite">
-				<?php foreach ( $dd_feat as $dd_i => $dd_p ) : ?>
-					<div class="dd-feat__info<?php echo 0 === $dd_i ? ' is-current' : ''; ?>" data-dd-info="<?php echo (int) $dd_i; ?>" <?php echo 0 === $dd_i ? '' : 'hidden'; ?>>
-						<h2 class="dd-feat__name"><a href="<?php echo esc_url( $dd_p->get_permalink() ); ?>"><?php echo esc_html( $dd_p->get_name() ); ?></a></h2>
-						<?php if ( $dd_line( $dd_p ) ) : ?>
-							<p class="dd-feat__line"><?php echo esc_html( $dd_line( $dd_p ) ); ?></p>
-						<?php endif; ?>
-						<p class="dd-feat__price"><?php echo wp_kses_post( $dd_p->get_price_html() ); ?></p>
-						<a class="dd-feat__cta" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>"><?php esc_html_e( 'View the piece', 'designer-designs' ); ?><span aria-hidden="true">→</span></a>
-					</div>
-				<?php endforeach; ?>
-			</div>
 			<?php if ( count( $dd_feat ) > 1 ) : ?>
-				<ol class="dd-feat__list" aria-label="<?php esc_attr_e( 'Choose a featured piece', 'designer-designs' ); ?>">
+				<button type="button" class="dd-feat__arrow dd-feat__arrow--prev" data-dd-prev aria-label="<?php esc_attr_e( 'Previous piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'left', 22 ); // phpcs:ignore ?></button>
+				<button type="button" class="dd-feat__arrow dd-feat__arrow--next" data-dd-next aria-label="<?php esc_attr_e( 'Next piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'right', 22 ); // phpcs:ignore ?></button>
+				<div class="dd-feat__dots" role="tablist" aria-label="<?php esc_attr_e( 'Choose a piece', 'designer-designs' ); ?>">
 					<?php foreach ( $dd_feat as $dd_i => $dd_p ) : ?>
-						<li><button type="button" data-dd-go="<?php echo (int) $dd_i; ?>" aria-current="<?php echo 0 === $dd_i ? 'true' : 'false'; ?>"><span class="dd-feat__num"><?php echo esc_html( sprintf( '%02d', $dd_i + 1 ) ); ?></span><span class="dd-feat__lname"><?php echo esc_html( $dd_p->get_name() ); ?></span><span class="dd-feat__bar" aria-hidden="true"></span></button></li>
+						<button type="button" data-dd-go="<?php echo (int) $dd_i; ?>" aria-current="<?php echo 0 === $dd_i ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( $dd_p->get_name() ); ?>"></button>
 					<?php endforeach; ?>
-				</ol>
+				</div>
 			<?php endif; ?>
 		</div>
 	</section>
