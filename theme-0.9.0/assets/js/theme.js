@@ -369,6 +369,19 @@
 		});
 		stage.addEventListener('mouseenter', function () { stage.classList.add('is-lit'); });
 		stage.addEventListener('mouseleave', function () { stage.classList.remove('is-lit'); aim(50, 45); });
+		// "Lights on": the whole room lights up and the effect goes away (remembered on this device).
+		var sw = qs('[data-dd-switch]', box);
+		if (!sw) return;
+		var label = qs('span', sw);
+		function setLights(on, save) {
+			box.classList.toggle('lights-on', on);
+			sw.setAttribute('aria-pressed', on ? 'true' : 'false');
+			label.textContent = on ? sw.dataset.off : sw.dataset.on;
+			if (save) store.set('ddLights', on ? 'on' : 'off');
+		}
+		sw.hidden = false;
+		setLights(store.get('ddLights') === 'on', false);
+		sw.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setLights(!box.classList.contains('lights-on'), true); });
 	})();
 
 	/* ---------------- Collections list: a quiet photo follows the pointer (desktop only) ---------------- */

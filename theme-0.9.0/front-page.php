@@ -59,6 +59,7 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 				</a>
 			<?php endforeach; ?>
 			<div class="dd-feat__light" aria-hidden="true"></div>
+			<button type="button" class="dd-feat__switch" data-dd-switch aria-pressed="false" data-on="<?php esc_attr_e( 'Lights on', 'designer-designs' ); ?>" data-off="<?php esc_attr_e( 'Lights off', 'designer-designs' ); ?>" hidden><?php echo dd_icon( 'lamp', 18 ); // phpcs:ignore ?><span><?php esc_html_e( 'Lights on', 'designer-designs' ); ?></span></button>
 			<?php if ( count( $dd_feat ) > 1 ) : ?>
 				<button type="button" class="dd-feat__arrow dd-feat__arrow--prev" data-dd-prev aria-label="<?php esc_attr_e( 'Previous piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'left', 22 ); // phpcs:ignore ?></button>
 				<button type="button" class="dd-feat__arrow dd-feat__arrow--next" data-dd-next aria-label="<?php esc_attr_e( 'Next piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'right', 22 ); // phpcs:ignore ?></button>

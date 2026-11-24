@@ -3,7 +3,7 @@ Theme Name: Designer Designs
 Theme URI: https://designerdesigns.studio
 Author: Fernanda Montanher
 Description: Black-and-gold WooCommerce theme for Designer Designs Studio — handmade homeware from London. Lamplight hero that follows the cursor, mega menu with product photos, basket drawer with free-delivery progress and "Add a little extra" suggestions.
-Version: 0.9.6
+Version: 0.9.8
 Requires at least: 6.6
 Requires PHP: 8.0
 WC requires at least: 9.0
@@ -919,3 +919,11 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-feat.has-light .dd-feat__light{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at var(--lx,50%) var(--ly,45%),rgba(0,0,0,0) 0,rgba(0,0,0,0) 12%,rgba(0,0,0,.38) 30%,rgba(0,0,0,.66) 58%,rgba(0,0,0,.78) 100%);opacity:.7;transition:opacity 700ms ease-out}
 .dd-feat.has-light .dd-feat__light::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--lx,50%) var(--ly,45%),rgba(255,206,140,.42) 0,rgba(255,190,110,.18) 9%,rgba(255,180,100,0) 22%);mix-blend-mode:screen}
 .dd-feat.has-light .dd-feat__stage.is-lit .dd-feat__light{opacity:1}
+
+/* ---------- 0.9.8 Lights on / off switch on the banner ---------- */
+.dd-feat__switch{position:absolute;left:clamp(16px,2.5vw,36px);bottom:clamp(16px,2.4vw,28px);z-index:4;display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0 16px 0 12px;border:1px solid rgba(230,201,138,.45);border-radius:999px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--dd-champ);font:500 11px/1 var(--dd-sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background 300ms ease-out,border-color 300ms ease-out,color 300ms ease-out}
+.dd-feat__switch:hover,.dd-feat__switch:focus-visible{background:rgba(0,0,0,.7);border-color:var(--dd-champ)}
+.dd-feat__switch svg{flex:0 0 auto}
+.dd-feat.lights-on .dd-feat__switch{background:rgba(243,231,207,.9);color:#1a1410;border-color:transparent}
+.dd-feat.lights-on .dd-feat__light{opacity:0!important;transition:opacity 900ms ease-out}
+.dd-feat:not(.has-light) .dd-feat__switch{display:none}
