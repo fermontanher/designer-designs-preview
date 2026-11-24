@@ -3,7 +3,7 @@ Theme Name: Designer Designs
 Theme URI: https://designerdesigns.studio
 Author: Fernanda Montanher
 Description: Black-and-gold WooCommerce theme for Designer Designs Studio — handmade homeware from London. Lamplight hero that follows the cursor, mega menu with product photos, basket drawer with free-delivery progress and "Add a little extra" suggestions.
-Version: 0.9.5
+Version: 0.9.6
 Requires at least: 6.6
 Requires PHP: 8.0
 WC requires at least: 9.0
@@ -911,3 +911,12 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-card__foot .dd-card__view{margin:0}
 .dd-buy__kicker{font:500 11px/1.3 var(--dd-sans)!important;letter-spacing:.24em!important;text-transform:uppercase;color:#8a8073!important;margin-bottom:4px}
 .dd-home{min-height:0}
+
+/* ---------- 0.9.6 Opening without button; banner light that follows the pointer ---------- */
+.dd-curtain__skip{opacity:0}
+.dd-intro-curtain.is-late .dd-curtain__skip{opacity:.55}
+.dd-feat__light{display:none}
+.dd-feat.has-light .dd-feat__light{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(circle at var(--lx,50%) var(--ly,45%),rgba(255,214,150,.16) 0,rgba(255,200,130,.06) 14%,rgba(0,0,0,0) 26%,rgba(0,0,0,.30) 48%,rgba(0,0,0,.52) 78%);
+  mix-blend-mode:normal;transition:opacity 600ms ease-out;opacity:.85}
+.dd-feat.has-light .dd-feat__stage.is-lit .dd-feat__light{opacity:1}

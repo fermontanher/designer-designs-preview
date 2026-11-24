@@ -199,8 +199,9 @@
 			});
 		}
 		later(function () { curtain.classList.add('is-awake'); }, 60);
-		later(function () { curtain.classList.add('is-ready'); if (btn) btn.focus({ preventScroll: true }); }, 2200);
-		later(function () { curtain.classList.add('is-late'); }, 4200);
+		later(function () { curtain.classList.add('is-late'); }, 400);
+		// Client 24/11: no button. After a beat of pure black, the crack draws itself and opens.
+		later(function () { open(false); }, 1100);
 
 		function px(pt) { return [pt[0] / 100 * innerWidth, pt[1] / 100 * innerHeight]; }
 		function pointAt(k) {
@@ -294,8 +295,7 @@
 			});
 		}
 		function onKey(e) {
-			if (e.key === 'Escape') open(true);
-			else if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'PageDown') { if (document.activeElement && document.activeElement.matches && document.activeElement.matches('[data-dd-curtain-skip]')) return; e.preventDefault(); open(false); }
+			if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'PageDown') open(true);
 		}
 		// Scrolling means "let me in": hand the page back at once.
 		function onGesture() { if (opened) return; open(true); }
@@ -348,6 +348,27 @@
 		document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(timer); else restart(); });
 		function start() { if (started) return; started = true; restart(); }
 		if (box.classList.contains('is-on')) start(); else document.addEventListener('dd:lit', start);
+	})();
+
+	/* ---------------- Banner light (client 24/11): a warm light follows the pointer over the piece (desktop only) ---------------- */
+	(function () {
+		var box = qs('[data-dd-feat]');
+		if (!box || touch || reduce) return;
+		var stage = qs('.dd-feat__stage', box), tx = 50, ty = 45, x = 50, y = 45, raf = null;
+		box.classList.add('has-light');
+		function step() {
+			x += (tx - x) * 0.12; y += (ty - y) * 0.12;
+			stage.style.setProperty('--lx', x.toFixed(2) + '%');
+			stage.style.setProperty('--ly', y.toFixed(2) + '%');
+			raf = (Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05) ? requestAnimationFrame(step) : null;
+		}
+		function aim(nx, ny) { tx = nx; ty = ny; if (!raf) raf = requestAnimationFrame(step); }
+		stage.addEventListener('mousemove', function (e) {
+			var r = stage.getBoundingClientRect();
+			aim((e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100);
+		});
+		stage.addEventListener('mouseenter', function () { stage.classList.add('is-lit'); });
+		stage.addEventListener('mouseleave', function () { stage.classList.remove('is-lit'); aim(50, 45); });
 	})();
 
 	/* ---------------- Collections list: a quiet photo follows the pointer (desktop only) ---------------- */

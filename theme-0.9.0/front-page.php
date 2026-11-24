@@ -24,7 +24,7 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 ?>
 <main id="main" class="dd-home">
 
-	<?php /* Opening: black until the visitor lets the light in. The four shards are the dark surface that breaks open. */ ?>
+	<?php /* Opening (client 24/11): completely black, then the gold crack draws itself and breaks open to reveal the banner. No button. */ ?>
 	<div class="dd-intro-curtain" data-dd-curtain data-crack="<?php echo esc_attr( '[[52, -2], [51.68, 4.31], [50.87, 12.51], [51.13, 19.04], [50.81, 24.28], [52.4, 31.3], [50.3, 36.17], [52.18, 41.04], [48.48, 48.31], [51.99, 56.74], [52.03, 63.85], [48.22, 68.98], [46.02, 75.6], [45.76, 80.86], [47.02, 85.48], [50.25, 91.74], [51.06, 98.32], [51.73, 102]]' ); ?>" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" hidden>
 		<div class="dd-curtain__flood" aria-hidden="true"></div>
 		<?php foreach ( array( 'lt' => 'polygon(-2% -2%, 52% -2%, 51.68% 4.31%, 50.87% 12.51%, 51.13% 19.04%, 50.81% 24.28%, 52.4% 31.3%, 50.3% 36.17%, 52.18% 41.04%, 48.48% 48.31%, 51.99% 56.74%, 42.99% 58.1%, 33.99% 58.85%, 25.0% 63.56%, 16.0% 65.09%, 7.0% 65.95%, -2% 66%)', 'lb' => 'polygon(-2% 66%, 7.0% 65.95%, 16.0% 65.09%, 25.0% 63.56%, 33.99% 58.85%, 42.99% 58.1%, 51.99% 56.74%, 52.03% 63.85%, 48.22% 68.98%, 46.02% 75.6%, 45.76% 80.86%, 47.02% 85.48%, 50.25% 91.74%, 51.06% 98.32%, 51.73% 102%, -2% 102%)', 'rt' => 'polygon(52% -2%, 51.68% 4.31%, 50.87% 12.51%, 51.13% 19.04%, 50.81% 24.28%, 52.4% 31.3%, 50.3% 36.17%, 58.92% 35.72%, 67.53% 32.63%, 76.15% 30.9%, 84.77% 29.8%, 93.38% 27.47%, 102% 28%, 102% -2%)', 'rb' => 'polygon(102% 28%, 93.38% 27.47%, 84.77% 29.8%, 76.15% 30.9%, 67.53% 32.63%, 58.92% 35.72%, 50.3% 36.17%, 52.18% 41.04%, 48.48% 48.31%, 51.99% 56.74%, 52.03% 63.85%, 48.22% 68.98%, 46.02% 75.6%, 45.76% 80.86%, 47.02% 85.48%, 50.25% 91.74%, 51.06% 98.32%, 51.73% 102%, 102% 102%)' ) as $dd_side => $dd_clip ) : ?>
@@ -36,13 +36,6 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 			<div class="dd-curtain__seam dd-curtain__seam--b" style="clip-path:polygon(50.3% 36.010000000000005%, 58.92% 35.56%, 67.53% 32.470000000000006%, 76.15% 30.74%, 84.77% 29.64%, 93.38% 27.31%, 102% 27.84%, 102% 28.16%, 93.38% 27.63%, 84.77% 29.96%, 76.15% 31.06%, 67.53% 32.79%, 58.92% 35.879999999999995%, 50.3% 36.33%)"></div>
 		</div>
 		<div class="dd-curtain__spark" aria-hidden="true"></div>
-		<div class="dd-curtain__ui">
-			<p class="dd-whisper" data-dd-whisper><?php esc_html_e( 'Every piece begins in the dark.', 'designer-designs' ); ?></p>
-			<button type="button" class="dd-ember" data-dd-curtain-open>
-				<span class="dd-ember__light" aria-hidden="true"></span>
-				<span class="dd-ember__label"><?php esc_html_e( 'Let the light in', 'designer-designs' ); ?></span>
-			</button>
-		</div>
 		<button type="button" class="dd-curtain__skip" data-dd-curtain-skip><?php esc_html_e( 'Enter', 'designer-designs' ); ?></button>
 	</div>
 
@@ -65,6 +58,7 @@ if ( ! $dd_feat && function_exists( 'wc_get_products' ) ) {
 					</picture>
 				</a>
 			<?php endforeach; ?>
+			<div class="dd-feat__light" aria-hidden="true"></div>
 			<?php if ( count( $dd_feat ) > 1 ) : ?>
 				<button type="button" class="dd-feat__arrow dd-feat__arrow--prev" data-dd-prev aria-label="<?php esc_attr_e( 'Previous piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'left', 22 ); // phpcs:ignore ?></button>
 				<button type="button" class="dd-feat__arrow dd-feat__arrow--next" data-dd-next aria-label="<?php esc_attr_e( 'Next piece', 'designer-designs' ); ?>"><?php echo dd_icon( 'right', 22 ); // phpcs:ignore ?></button>
