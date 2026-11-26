@@ -333,8 +333,12 @@
 		var prev = qs('[data-dd-prev]', box), next = qs('[data-dd-next]', box);
 		if (prev) prev.addEventListener('click', function () { go(cur - 1); });
 		if (next) next.addEventListener('click', function () { go(cur + 1); });
-		['mouseenter', 'focusin'].forEach(function (e) { box.addEventListener(e, function () { paused = true; clearTimeout(timer); }); });
-		['mouseleave', 'focusout'].forEach(function (e) { box.addEventListener(e, function (ev) { if (ev.type === 'focusout' && box.contains(ev.relatedTarget)) return; paused = false; restart(); }); });
+		// Autoplay (client 26/11): keeps sliding even with the mouse over it. It only waits while a keyboard user is inside it.
+		box.addEventListener('focusin', function (ev) {
+			var kb = true; try { kb = ev.target.matches(':focus-visible'); } catch (x) {}
+			if (kb) { paused = true; clearTimeout(timer); }
+		});
+		box.addEventListener('focusout', function (ev) { if (box.contains(ev.relatedTarget)) return; paused = false; restart(); });
 		box.addEventListener('keydown', function (e) {
 			if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
 			if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
