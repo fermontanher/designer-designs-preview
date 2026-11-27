@@ -387,7 +387,8 @@
 			label.textContent = on ? sw.dataset.off : sw.dataset.on;
 			if (save) store.set('ddLights', on ? 'on' : 'off');
 		}
-		return; // Client 26/11: the light switch lives on the opening screen again, not on the banner.
+		sw.hidden = false;
+		setLights(store.get('ddLights') === 'on', false);
 		sw.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setLights(!box.classList.contains('lights-on'), true); });
 	})();
 
