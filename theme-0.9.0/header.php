@@ -112,7 +112,7 @@ $dd_now   = get_queried_object();
 							<a class="dd-mega__item" href="<?php echo esc_url( $dd_p->get_permalink() ); ?>">
 								<?php echo $dd_p->get_image( 'dd-card', array( 'loading' => 'lazy', 'alt' => '' ) ); // phpcs:ignore ?>
 								<span class="name"><?php echo esc_html( $dd_p->get_name() ); ?></span>
-								<span class="price"><?php echo wp_kses_post( $dd_p->get_price_html() ); ?></span>
+								<?php /* Client 26/11: no prices on the menu pictures. */ ?>
 							</a>
 						<?php endforeach; ?>
 					</div>
