@@ -200,8 +200,8 @@
 		}
 		later(function () { curtain.classList.add('is-awake'); }, 60);
 		later(function () { curtain.classList.add('is-late'); }, 400);
-		// Client 24/11: no button. After a beat of pure black, the crack draws itself and opens.
-		later(function () { open(false); }, 1100);
+		// Client 26/11: the screen waits in the dark with only the light switch. The crack starts once it is switched on.
+		(function () { var f = hero ? qs('.dd-feat__slide.is-current img', hero) : null; if (f && f.decode) { f.decode().catch(function () {}); } })();
 
 		function px(pt) { return [pt[0] / 100 * innerWidth, pt[1] / 100 * innerHeight]; }
 		function pointAt(k) {
@@ -248,14 +248,10 @@
 			}
 		}
 		function heroLayer() {
+			// 0.11.5: no copied layer any more. The real banner photo sits under the curtain and is revealed in place,
+			// so there is no hand-off, no re-crop and no layout animation: only a GPU transform on one image.
 			var slide = hero ? qs('.dd-feat__slide.is-current', hero) : null, img = slide ? qs('img', slide) : null;
-			if (!img) return null;
-			var layer = document.createElement('div'); layer.className = 'dd-curtain__hero';
-			var im = document.createElement('img'); im.src = img.currentSrc || img.src; im.alt = '';
-			layer.appendChild(im);
-			layer.style.cssText = 'left:0;top:0;width:' + innerWidth + 'px;height:' + innerHeight + 'px';
-			curtain.insertBefore(layer, curtain.firstChild);
-			return { layer: layer, img: im, slide: slide };
+			return img ? { img: img } : null;
 		}
 		function open(instant) {
 			if (opened) return;
@@ -269,37 +265,45 @@
 				// 2. Flare: the crack blazes and branches, sparks fly.
 				curtain.classList.add('is-flare');
 				sparks();
-				// 3. The dark surface breaks open; behind it the first piece fills the screen.
+				// 3. The dark surface breaks open on the banner itself; the photo eases from close-up to its frame.
 				later(function () {
 					curtain.classList.add('is-shatter');
 					if (h) {
-						h.layer.style.opacity = 1;
-						h.img.animate([{ transform: 'scale(1.14)', filter: 'brightness(1.5) saturate(.85)' }, { transform: 'scale(1)', filter: 'none' }],
-							{ duration: 1600, easing: 'cubic-bezier(.16,.84,.24,1)', fill: 'forwards' });
+						var im = h.img;
+						im.style.transition = 'none';
+						im.style.willChange = 'transform';
+						var z = im.animate([{ transform: 'scale(1.12)' }, { transform: 'scale(1)' }],
+							{ duration: 2800, easing: 'cubic-bezier(.16,.84,.24,1)', fill: 'both' });
+						z.onfinish = function () {
+							z.cancel();
+							im.style.willChange = '';
+							requestAnimationFrame(function () { im.style.transition = ''; });
+						};
 					}
 				}, 240);
-				// 4. The piece settles into its frame in the banner.
+				// 4. Hand the page back.
 				later(function () {
 					curtain.classList.add('is-reveal');
 					light();
-					if (h) {
-						var r = h.slide.getBoundingClientRect();
-						h.layer.animate([
-							{ left: '0px', top: '0px', width: innerWidth + 'px', height: innerHeight + 'px' },
-							{ left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' }
-						], { duration: 1000, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' });
-					}
 				}, 1650);
 				later(function () { curtain.classList.add('is-fading'); }, 2700);
 				later(done, 3150);
 			});
 		}
 		function onKey(e) {
+			if (btn && e.target === btn && (e.key === 'Enter' || e.key === ' ')) return; // the switch itself handles these
 			if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'PageDown') open(true);
 		}
 		// Scrolling means "let me in": hand the page back at once.
 		function onGesture() { if (opened) return; open(true); }
-		if (btn) btn.addEventListener('click', function () { open(false); });
+		var switched = false;
+		if (btn) btn.addEventListener('click', function () {
+			if (switched || opened) return;
+			switched = true;
+			curtain.classList.add('is-switched');                     // the rocker flips, a warm light blooms from it
+			later(function () { curtain.classList.add('is-switched-out'); }, 450); // switch and words fade into the dark
+			later(function () { open(false); }, 950);                   // then the crack starts
+		});
 		var skip = qs('[data-dd-curtain-skip]', curtain);
 		if (skip) skip.addEventListener('click', function () { open(true); });
 		document.addEventListener('keydown', onKey);
@@ -383,8 +387,7 @@
 			label.textContent = on ? sw.dataset.off : sw.dataset.on;
 			if (save) store.set('ddLights', on ? 'on' : 'off');
 		}
-		sw.hidden = false;
-		setLights(store.get('ddLights') === 'on', false);
+		return; // Client 26/11: the light switch lives on the opening screen again, not on the banner.
 		sw.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setLights(!box.classList.contains('lights-on'), true); });
 	})();
 
@@ -815,3 +818,144 @@
 	})();
 
 })(jQuery);
+
+/* 0.10.0 Shop by category rail: arrows scroll ~one view, disabled at the ends. */
+(function () {
+	document.querySelectorAll('[data-dd-rail]').forEach(function (rail) {
+		var track = rail.querySelector('[data-dd-rail-track]');
+		var prev = rail.querySelector('[data-dd-rail-prev]');
+		var next = rail.querySelector('[data-dd-rail-next]');
+		if (!track || !prev || !next) { return; }
+		function step() {
+			var item = track.querySelector('li');
+			var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+			var w = item ? item.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+			return Math.max(w, Math.floor(track.clientWidth * 0.8 / w) * w);
+		}
+		function sync() {
+			var max = track.scrollWidth - track.clientWidth - 2;
+			prev.disabled = track.scrollLeft <= 2;
+			next.disabled = track.scrollLeft >= max;
+		}
+		prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+		next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+		track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+		window.addEventListener('resize', sync);
+		sync();
+	});
+})();
+
+/* 0.11.0 Home: scroll reveals (staggered per section) and the reviews fade carousel. */
+(function () {
+	var items = document.querySelectorAll('.dd-rv');
+	if (!items.length) { return; }
+	if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		items.forEach(function (el) { el.classList.add('is-in'); });
+		return;
+	}
+	document.documentElement.classList.add('dd-js');
+	document.querySelectorAll('.dd-potm__copy, .dd-studio__copy, .dd-steps__row').forEach(function (group) {
+		group.querySelectorAll('.dd-rv').forEach(function (el, i) { el.style.setProperty('--d', (i * 120) + 'ms'); });
+	});
+	var io = new IntersectionObserver(function (entries) {
+		entries.forEach(function (e) {
+			if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+		});
+	}, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+	items.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+	var box = document.querySelector('[data-dd-hrev]');
+	if (!box) { return; }
+	var slides = box.querySelectorAll('.dd-hrev__item');
+	var dots = box.querySelectorAll('.dd-hrev__dots button');
+	if (slides.length < 2) { return; }
+	var cur = 0, timer = null, reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	function go(n) {
+		cur = (n + slides.length) % slides.length;
+		slides.forEach(function (s, i) { s.classList.toggle('is-active', i === cur); s.setAttribute('aria-hidden', i === cur ? 'false' : 'true'); });
+		dots.forEach(function (d, i) {
+			d.classList.remove('is-active'); void d.offsetWidth;
+			if (i === cur) { d.classList.add('is-active'); }
+		});
+		restart();
+	}
+	function restart() { clearTimeout(timer); if (!reduce && !box.classList.contains('is-paused')) { timer = setTimeout(function () { go(cur + 1); }, 7000); } }
+	dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
+	box.addEventListener('mouseenter', function () { box.classList.add('is-paused'); clearTimeout(timer); });
+	box.addEventListener('mouseleave', function () { box.classList.remove('is-paused'); restart(); });
+	box.addEventListener('focusin', function () { box.classList.add('is-paused'); clearTimeout(timer); });
+	box.addEventListener('focusout', function () { box.classList.remove('is-paused'); restart(); });
+	restart();
+})();
+
+
+
+/* 0.11.4 Product gallery: size the stage to the first (cover) image's real proportions. */
+(function () {
+	var img = document.querySelector('[data-dd-stage] > img');
+	if (!img) { return; }
+	function fit() {
+		if (img.dataset.ddAr || !img.naturalWidth) { return; }
+		var r = img.naturalWidth / img.naturalHeight;
+		if (r >= 0.6 && r <= 2) { img.style.aspectRatio = img.naturalWidth + ' / ' + img.naturalHeight; }
+		img.dataset.ddAr = '1';
+	}
+	if (img.complete) { fit(); } else { img.addEventListener('load', fit, { once: true }); }
+})();
+
+/* 0.11.6 Piece of the month: a soft magnifying loupe glides over the photo and follows the cursor. */
+(function () {
+	var box = document.querySelector('.dd-potm__media');
+	if (!box || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) { return; }
+	var img = box.querySelector('img');
+	if (!img) { return; }
+	var Z = 2.4, still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	var lens = document.createElement('span');
+	lens.className = 'dd-loupe';
+	lens.setAttribute('aria-hidden', 'true');
+	box.appendChild(lens);
+	var tx = 0, ty = 0, cx = 0, cy = 0, raf = null, on = false, geo = null;
+	function src() {
+		var best = img.currentSrc || img.src, w = 0;
+		(img.getAttribute('srcset') || '').split(',').forEach(function (p) {
+			var m = p.trim().split(/\s+/); var n = parseInt(m[1], 10) || 0;
+			if (n > w) { w = n; best = m[0]; }
+		});
+		return best;
+	}
+	function measure() {
+		var r = box.getBoundingClientRect();
+		var nw = img.naturalWidth || r.width, nh = img.naturalHeight || r.height;
+		var s = Math.max(r.width / nw, r.height / nh), rw = nw * s, rh = nh * s;
+		var k = 1, t = getComputedStyle(img).transform;
+		if (t && t !== 'none') { k = parseFloat(t.split('(')[1]) || 1; }
+		geo = { r: r, rw: rw * k, rh: rh * k, ox: (r.width - rw * k) / 2, oy: (r.height - rh * k) / 2, L: lens.offsetWidth };
+		lens.style.backgroundSize = (geo.rw * Z) + 'px ' + (geo.rh * Z) + 'px';
+	}
+	function paint() {
+		lens.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+		var bx = -((cx - geo.ox) * Z - geo.L / 2), by = -((cy - geo.oy) * Z - geo.L / 2);
+		lens.style.backgroundPosition = bx + 'px ' + by + 'px';
+	}
+	function tick() {
+		var f = still ? 1 : 0.16;
+		cx += (tx - cx) * f; cy += (ty - cy) * f;
+		paint();
+		raf = (on && (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1)) ? requestAnimationFrame(tick) : null;
+	}
+	function aim(e) {
+		tx = e.clientX - geo.r.left; ty = e.clientY - geo.r.top;
+		if (!raf) { raf = requestAnimationFrame(tick); }
+	}
+	box.addEventListener('mouseenter', function (e) {
+		if (!lens.style.backgroundImage) { lens.style.backgroundImage = 'url("' + src() + '")'; }
+		measure(); on = true;
+		tx = cx = e.clientX - geo.r.left; ty = cy = e.clientY - geo.r.top; paint();
+		box.classList.add('is-loupe');
+	});
+	box.addEventListener('mousemove', function (e) { if (!geo) { measure(); } aim(e); });
+	box.addEventListener('mouseleave', function () { on = false; box.classList.remove('is-loupe'); });
+	window.addEventListener('scroll', function () { if (on) { measure(); } }, { passive: true });
+	window.addEventListener('resize', function () { if (on) { measure(); } });
+})();

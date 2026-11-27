@@ -3,7 +3,7 @@ Theme Name: Designer Designs
 Theme URI: https://designerdesigns.studio
 Author: Fernanda Montanher
 Description: Black-and-gold WooCommerce theme for Designer Designs Studio — handmade homeware from London. Lamplight hero that follows the cursor, mega menu with product photos, basket drawer with free-delivery progress and "Add a little extra" suggestions.
-Version: 0.9.9
+Version: 0.12.0
 Requires at least: 6.6
 Requires PHP: 8.0
 WC requires at least: 9.0
@@ -815,16 +815,6 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 @media (prefers-reduced-motion:reduce){.dd-feat__slide img{transition:none;transform:none}}
 
 /* ---------- Shop by category (Cox & Cox row) ---------- */
-.dd-shopcat{padding-top:clamp(56px,7vw,96px);padding-bottom:clamp(64px,8vw,112px)}
-.dd-shopcat__title{text-align:center;font:400 clamp(30px,3vw,42px)/1.1 var(--dd-serif);color:var(--dd-cream);margin-bottom:clamp(28px,3vw,44px)}
-.dd-shopcat__title em{font-style:italic;color:var(--dd-gold-text)}
-.dd-shopcat__row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:clamp(12px,1.6vw,24px)}
-.dd-shopcat__row a{display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--dd-cream)}
-.dd-shopcat__row img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--dd-coal);transition:filter 400ms ease-out}
-.dd-shopcat__row a:hover img{filter:brightness(1.1)}
-.dd-shopcat__row span{font:400 17px/1.2 var(--dd-sans);letter-spacing:.02em}
-.dd-shopcat__row a:hover span{color:var(--dd-champ);text-decoration:underline;text-underline-offset:5px}
-@media (max-width:900px){.dd-shopcat__row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-right:calc(var(--dd-pad)*-1);padding-right:var(--dd-pad);scrollbar-width:none}.dd-shopcat__row::-webkit-scrollbar{display:none}.dd-shopcat__row li{flex:0 0 42%;scroll-snap-align:start}}
 
 /* ---------- Menu dropdown as on monoaurel.com: list left, three pieces on the right, black ---------- */
 .dd-mega__inner{grid-template-columns:240px minmax(0,1fr)}
@@ -927,3 +917,232 @@ li.product:hover .dd-card__quick,li.product:focus-within .dd-card__quick{opacity
 .dd-feat.lights-on .dd-feat__switch{background:rgba(243,231,207,.9);color:#1a1410;border-color:transparent}
 .dd-feat.lights-on .dd-feat__light{opacity:0!important;transition:opacity 900ms ease-out}
 .dd-feat:not(.has-light) .dd-feat__switch{display:none}
+
+/* 0.9.9 Soon categories: visible, not clickable */
+.dd-nav__btn.is-soon{color:rgba(243,236,224,.42);cursor:default}
+.dd-nav__btn.is-soon::after{display:none}
+.dd-nav__btn.is-soon sup,.dd-mobnav .cat.is-soon small,.dd-soon-item sup{font:500 9px/1 var(--dd-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dd-gold-2);margin-left:6px;vertical-align:super}
+.dd-mobnav .cat.is-soon{display:flex;align-items:center;min-height:94px;padding:12px 0;border-bottom:1px solid rgba(191,156,86,.16);color:rgba(243,236,224,.42);font:400 22px var(--dd-serif);cursor:default}
+.dd-soon-item{color:rgba(243,236,224,.42);cursor:default}
+
+/* 0.10.0 Shop by category carousel (Cox & Cox ref, video 7:50) */
+.dd-shopcat{padding:clamp(56px,7vw,96px) 0 clamp(64px,8vw,112px);max-width:none}
+.dd-shopcat__head{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:16px;margin-bottom:clamp(24px,2.6vw,36px)}
+.dd-shopcat__title{grid-column:2;text-align:center;margin:0;font:400 clamp(30px,3vw,42px)/1.1 var(--dd-serif);color:var(--dd-cream)}
+.dd-shopcat__title em{font-style:italic;color:var(--dd-gold-text)}
+.dd-shopcat__ctrl{grid-column:3;justify-self:end;display:flex;align-items:center;gap:6px}
+.dd-shopcat__all{font:500 13px/1 var(--dd-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--dd-cream);text-decoration:none;margin-right:14px;padding:14px 0;background:linear-gradient(var(--dd-gold-2),var(--dd-gold-2)) 0 calc(100% - 8px)/0 1px no-repeat;transition:background-size 300ms ease-out,color 200ms ease-out}
+.dd-shopcat__all:hover,.dd-shopcat__all:focus-visible{color:var(--dd-champ);background-size:100% 1px}
+.dd-shopcat__arrow{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(191,156,86,.35);border-radius:50%;background:none;color:var(--dd-cream);cursor:pointer;transition:border-color 200ms ease-out,color 200ms ease-out,opacity 200ms ease-out}
+.dd-shopcat__arrow:hover:not(:disabled),.dd-shopcat__arrow:focus-visible{border-color:var(--dd-gold-2);color:var(--dd-champ)}
+.dd-shopcat__arrow:disabled{opacity:.3;cursor:default}
+.dd-shopcat__row{list-style:none;margin:0;display:flex;gap:clamp(12px,1.4vw,22px);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:0 var(--dd-pad);scroll-padding-inline:var(--dd-pad)}
+.dd-shopcat__row::-webkit-scrollbar{display:none}
+@media (min-width:1728px){.dd-shopcat__row{padding-left:calc((100vw - var(--dd-max))/2 + var(--dd-pad));scroll-padding-left:calc((100vw - var(--dd-max))/2 + var(--dd-pad))}}
+.dd-shopcat__item{flex:0 0 clamp(220px,22vw,340px);scroll-snap-align:start}
+.dd-shopcat__card{display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--dd-cream)}
+.dd-shopcat__media{position:relative;display:block;overflow:hidden;aspect-ratio:1/1;background:var(--dd-coal)}
+.dd-shopcat__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 700ms cubic-bezier(.22,.61,.36,1),filter 400ms ease-out}
+a.dd-shopcat__card:hover .dd-shopcat__media img,a.dd-shopcat__card:focus-visible .dd-shopcat__media img{transform:scale(1.05);filter:brightness(1.08)}
+.dd-shopcat__name{font:400 18px/1.2 var(--dd-sans);letter-spacing:.02em;align-self:flex-start;background:linear-gradient(var(--dd-gold-2),var(--dd-gold-2)) 0 100%/0 1px no-repeat;padding-bottom:4px;transition:background-size 300ms ease-out,color 200ms ease-out}
+a.dd-shopcat__card:hover .dd-shopcat__name,a.dd-shopcat__card:focus-visible .dd-shopcat__name{color:var(--dd-champ);background-size:100% 1px}
+a.dd-shopcat__card:focus-visible{outline:none}
+a.dd-shopcat__card:focus-visible .dd-shopcat__media{outline:1px solid var(--dd-gold-2);outline-offset:4px}
+.is-soon .dd-shopcat__card{cursor:default}
+.is-soon .dd-shopcat__media img{filter:brightness(.45) saturate(.7)}
+.is-soon .dd-shopcat__name{color:rgba(243,236,224,.5)}
+.dd-shopcat__soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:italic 400 clamp(22px,2vw,28px)/1 var(--dd-serif);color:var(--dd-gold-text)}
+@media (max-width:900px){
+  .dd-shopcat__head{grid-template-columns:1fr;justify-items:center}
+  .dd-shopcat__title{grid-column:1}
+  .dd-shopcat__ctrl{grid-column:1;justify-self:center}
+  .dd-shopcat__arrow{display:none}
+  .dd-shopcat__all{margin:0}
+  .dd-shopcat__item{flex-basis:62vw}
+}
+@media (prefers-reduced-motion:reduce){.dd-shopcat__row{scroll-behavior:auto}.dd-shopcat__media img{transition:none}}
+
+/* 0.10.1 Editorial tiles (Cox & Cox ref) */
+.dd-edit{padding-bottom:clamp(64px,8vw,112px)}
+.dd-edit__row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,28px)}
+.dd-edit__tile a{position:relative;display:block;overflow:hidden;aspect-ratio:4/5;background:var(--dd-coal);color:#fff;text-decoration:none}
+.dd-edit__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1200ms cubic-bezier(.22,.61,.36,1)}
+.dd-edit__tile a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.18) 62%,rgba(0,0,0,.62) 100%);pointer-events:none}
+.dd-edit__copy{position:absolute;left:0;right:0;bottom:0;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:0 24px clamp(28px,3vw,44px)}
+.dd-edit__title{font:400 clamp(28px,2.6vw,40px)/1.05 var(--dd-serif);letter-spacing:.005em;text-shadow:0 1px 18px rgba(0,0,0,.35)}
+.dd-edit__sub{font:400 clamp(15px,1.15vw,18px)/1.35 var(--dd-sans);color:rgba(255,255,255,.92);text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.dd-edit__btn{margin-top:clamp(12px,1.4vw,20px);min-height:48px;padding:0 34px;display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.85);font:600 13px/1 var(--dd-sans);letter-spacing:.18em;text-transform:uppercase;transition:background 300ms ease-out,border-color 300ms ease-out,color 300ms ease-out}
+.dd-edit__tile a:hover .dd-edit__img,.dd-edit__tile a:focus-visible .dd-edit__img{transform:scale(1.13)}
+.dd-edit__tile a:hover .dd-edit__btn,.dd-edit__tile a:focus-visible .dd-edit__btn{background:var(--dd-gold-2);border-color:var(--dd-gold-2);color:#0b0a08}
+.dd-edit__tile a:focus-visible{outline:1px solid var(--dd-gold-2);outline-offset:4px}
+@media (max-width:900px){
+  .dd-edit__row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-right:calc(var(--dd-pad)*-1);padding-right:var(--dd-pad)}
+  .dd-edit__row::-webkit-scrollbar{display:none}
+  .dd-edit__tile{flex:0 0 80vw;scroll-snap-align:start}
+}
+@media (prefers-reduced-motion:reduce){.dd-edit__img{transition:none}}
+
+/* 0.11.0 Home sections · minimal, with quiet scroll reveals */
+.dd-kicker{font:500 11px/1 var(--dd-sans);letter-spacing:.24em;text-transform:uppercase;color:var(--dd-gold-text);margin:0}
+.dd-line-link{align-self:flex-start;display:inline-block;font:500 12px/1 var(--dd-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--dd-cream);text-decoration:none;padding:14px 0 8px;background:linear-gradient(var(--dd-gold-2),var(--dd-gold-2)) 0 100%/100% 1px no-repeat;transition:color 250ms ease-out,letter-spacing 400ms cubic-bezier(.22,.61,.36,1)}
+.dd-line-link:hover,.dd-line-link:focus-visible{color:var(--dd-champ);letter-spacing:.26em}
+/* reveal */
+.dd-js .dd-rv{opacity:0;transform:translateY(22px);transition:opacity 1000ms cubic-bezier(.22,.61,.36,1),transform 1000ms cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0ms)}
+.dd-js .dd-rv.is-in{opacity:1;transform:none}
+.dd-js .dd-rv--clip{opacity:1;transform:none;clip-path:inset(12% 12% 12% 12%);transition:clip-path 1400ms cubic-bezier(.65,0,.35,1)}
+.dd-js .dd-rv--clip img{transform:scale(1.18);transition:transform 1800ms cubic-bezier(.22,.61,.36,1)}
+.dd-js .dd-rv--clip.is-in{clip-path:inset(0 0 0 0)}
+.dd-js .dd-rv--clip.is-in img{transform:scale(1.04)}
+/* 1 promise strip */
+.dd-promise-strip{border-bottom:1px solid var(--dd-line);background:#000}
+.dd-promise-strip ul{list-style:none;margin:0 auto;display:flex;justify-content:center;flex-wrap:wrap;padding-top:20px;padding-bottom:20px}
+.dd-promise-strip li{font:500 11px/1 var(--dd-sans);letter-spacing:.22em;text-transform:uppercase;color:rgba(243,236,224,.72);padding:6px 26px;position:relative}
+.dd-promise-strip li+li::before{content:"";position:absolute;left:0;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--dd-gold-2);transform:scale(0);transition:transform 600ms cubic-bezier(.34,1.56,.64,1) calc(400ms + var(--i,0)*150ms)}
+.dd-promise-strip.is-in li+li::before,html:not(.dd-js) .dd-promise-strip li+li::before{transform:scale(1)}
+.dd-promise-strip li:nth-child(2){--i:1}.dd-promise-strip li:nth-child(3){--i:2}.dd-promise-strip li:nth-child(4){--i:3}
+/* 5 piece of the month */
+.dd-potm{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:center;margin-bottom:clamp(72px,9vw,140px)}
+.dd-potm__media{overflow:hidden;aspect-ratio:3/2;background:var(--dd-coal)}
+.dd-potm__media img{width:100%;height:100%;object-fit:cover;display:block}
+.dd-potm__copy{display:flex;flex-direction:column;gap:16px;padding:0 clamp(24px,6vw,110px) 0 clamp(28px,5vw,88px)}
+.dd-potm__title{font:400 clamp(34px,3.6vw,56px)/1.02 var(--dd-serif);color:var(--dd-cream);margin:0}
+.dd-potm__meta{font:400 14px/1.4 var(--dd-sans);letter-spacing:.06em;color:var(--dd-gold-text);margin:0}
+.dd-potm__meta .amount{color:inherit}
+.dd-potm__text{font:400 15px/1.75 var(--dd-sans);color:rgba(243,236,224,.68);margin:0 0 8px;max-width:42ch}
+/* 2 studio */
+.dd-studio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,110px);align-items:center;margin-bottom:clamp(72px,9vw,140px)}
+.dd-studio__media{overflow:hidden;aspect-ratio:4/5;background:var(--dd-coal)}
+.dd-studio__media img{width:100%;height:100%;object-fit:cover;display:block}
+.dd-studio__copy{display:flex;flex-direction:column;gap:18px;max-width:480px}
+.dd-studio__title{font:400 clamp(32px,3.2vw,50px)/1.08 var(--dd-serif);color:var(--dd-cream);margin:0}
+.dd-studio__title em,.dd-steps__title em{font-style:italic;color:var(--dd-gold-text)}
+.dd-studio__text{font:400 16px/1.8 var(--dd-sans);color:rgba(243,236,224,.68);margin:0 0 6px}
+/* 3 steps */
+.dd-steps{text-align:center;margin-bottom:clamp(72px,9vw,140px)}
+.dd-steps__title{font:400 clamp(28px,2.8vw,42px)/1.1 var(--dd-serif);color:var(--dd-cream);margin:0 0 clamp(36px,4vw,60px)}
+.dd-steps__row{list-style:none;margin:0 auto;padding:0;max-width:1080px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.dd-steps__row li{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px clamp(16px,3vw,48px);position:relative}
+.dd-steps__row li+li::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(191,156,86,.32);transform:scaleY(0);transform-origin:top;transition:transform 1200ms cubic-bezier(.65,0,.35,1) var(--d,0ms)}
+.dd-steps__row li.is-in+li::before,.dd-steps__row li+li.is-in::before,html:not(.dd-js) .dd-steps__row li+li::before{transform:scaleY(1)}
+.dd-steps__row li:nth-child(2){--d:180ms}.dd-steps__row li:nth-child(3){--d:360ms}
+.dd-steps__num{font:italic 400 clamp(34px,3vw,46px)/1 var(--dd-serif);color:var(--dd-gold-text);margin-bottom:8px}
+.dd-steps__row strong{font:500 12px/1 var(--dd-sans);letter-spacing:.22em;text-transform:uppercase;color:var(--dd-cream)}
+.dd-steps__row span:last-child{font:400 14px/1.5 var(--dd-sans);color:rgba(243,236,224,.58)}
+/* 4 reviews */
+.dd-hrev{text-align:center;padding-top:clamp(56px,6vw,96px);padding-bottom:clamp(64px,7vw,110px);border-top:1px solid var(--dd-line)}
+.dd-hrev__stars{color:var(--dd-gold-2);letter-spacing:.5em;font-size:12px;margin:0 0 26px}
+.dd-hrev__stage{display:grid;max-width:760px;margin:0 auto}
+.dd-hrev__item{grid-area:1/1;margin:0;opacity:0;transform:translateY(10px);transition:opacity 900ms ease,transform 900ms cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.dd-hrev__item.is-active{opacity:1;transform:none;pointer-events:auto}
+.dd-hrev__item blockquote{margin:0 0 22px;font:400 clamp(22px,2.2vw,32px)/1.4 var(--dd-serif);color:var(--dd-cream)}
+.dd-hrev__item figcaption{font:500 11px/1 var(--dd-sans);letter-spacing:.2em;text-transform:uppercase;color:rgba(243,236,224,.5)}
+.dd-hrev__src{font:400 12px/1 var(--dd-sans);color:rgba(243,236,224,.38);margin:26px 0 0}
+.dd-hrev__dots{display:flex;justify-content:center;gap:4px;margin-top:22px}
+.dd-hrev__dots button{background:none;border:0;padding:14px 4px;cursor:pointer}
+.dd-hrev__dots span{display:block;width:28px;height:1px;background:rgba(243,236,224,.25);position:relative;overflow:hidden}
+.dd-hrev__dots span::after{content:"";position:absolute;inset:0;background:var(--dd-gold-2);transform:scaleX(0);transform-origin:left}
+.dd-hrev__dots .is-active span::after{animation:ddRevBar 7s linear forwards}
+.dd-hrev.is-paused .dd-hrev__dots .is-active span::after{animation-play-state:paused}
+@keyframes ddRevBar{to{transform:scaleX(1)}}
+@media (max-width:900px){
+  .dd-promise-strip ul{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .dd-promise-strip ul::-webkit-scrollbar{display:none}
+  .dd-promise-strip li{white-space:nowrap;padding:6px 18px}
+  .dd-potm{grid-template-columns:1fr}
+  .dd-potm__copy{padding:32px var(--dd-pad) 0}
+  .dd-studio{grid-template-columns:1fr}
+  .dd-steps__row{grid-template-columns:1fr;gap:28px}
+  .dd-steps__row li+li::before{left:50%;top:-14px;bottom:auto;width:40px;height:1px;margin-left:-20px;transform:scaleX(0);transform-origin:center}
+  .dd-steps__row li.is-in::before{transform:scaleX(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .dd-js .dd-rv,.dd-js .dd-rv--clip,.dd-js .dd-rv--clip img{opacity:1;transform:none;clip-path:none;transition:none}
+  .dd-hrev__item{transition:none}.dd-hrev__dots .is-active span::after{animation:none;transform:scaleX(1)}
+}
+
+/* studio image: crop the light band some source photos carry at the top */
+.dd-studio__media{position:relative}
+.dd-studio__media img{position:absolute;left:0;bottom:0;height:118%;transform-origin:50% 100%}
+
+/* 0.11.2 Piece of the month: hover loupe zoom (desktop, fine pointer) */
+@media (hover:hover) and (pointer:fine){
+  .dd-potm__media{cursor:zoom-in}
+  .dd-potm__media img{transform-origin:var(--zx,50%) var(--zy,50%)}
+  .dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoom img,.dd-potm__media.is-zoom img{transform:scale(2.1);transition:transform 650ms cubic-bezier(.22,.61,.36,1)}
+  .dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoomout img{transition:transform 650ms cubic-bezier(.22,.61,.36,1)}
+}
+@media (prefers-reduced-motion:reduce){.dd-potm__media.is-zoom img{transition:none!important}}
+
+/* 0.11.3 Made to order: line icons that draw themselves in */
+.dd-steps__num{display:flex;align-items:center;justify-content:center;height:64px;margin-bottom:6px;font:inherit}
+.dd-steps__icon{width:52px;height:52px;fill:none;stroke:var(--dd-gold-text);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.dd-js .dd-steps__icon path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1600ms cubic-bezier(.65,0,.35,1);transition-delay:calc(var(--d,0ms) + 250ms)}
+.dd-js .dd-steps__icon path:nth-child(2){transition-delay:calc(var(--d,0ms) + 450ms)}
+.dd-js .dd-steps__icon path:nth-child(n+3){transition-delay:calc(var(--d,0ms) + 700ms)}
+.dd-js .dd-steps__row li.is-in .dd-steps__icon path{stroke-dashoffset:0}
+.dd-steps__row li:hover .dd-steps__icon{transform:translateY(-3px);transition:transform 500ms cubic-bezier(.22,.61,.36,1)}
+.dd-steps__icon{transition:transform 500ms cubic-bezier(.22,.61,.36,1)}
+@media (prefers-reduced-motion:reduce){.dd-js .dd-steps__icon path{stroke-dashoffset:0;transition:none}}
+
+/* 0.11.4 Product gallery: main image box takes the cover photo's own shape, so its top lines up with the thumbnails (no letterbox bars) */
+.dd-stage img{object-position:50% 0}
+
+/* 0.11.5 Opening: the curtain goes see-through the moment it shatters, so the real banner shows between the shards */
+.dd-intro-curtain.is-go .dd-curtain__shard{will-change:transform,opacity;backface-visibility:hidden}
+.dd-intro-curtain.is-shatter{background:transparent!important;transition:none}
+.dd-intro-curtain .dd-curtain__hero{display:none}
+
+/* 0.11.6 Piece of the month: magnifying loupe instead of whole-image zoom */
+.dd-potm__media.is-zoom img,.dd-js .dd-potm__media.dd-rv--clip.is-in.is-zoom img{transform:scale(1.04)!important}
+@media (hover:hover) and (pointer:fine){
+  .dd-potm__media{position:relative;cursor:none}
+  .dd-loupe{position:absolute;left:0;top:0;z-index:3;width:var(--L,230px);height:var(--L,230px);margin:calc(var(--L,230px)/-2) 0 0 calc(var(--L,230px)/-2);border-radius:50%;pointer-events:none;background-repeat:no-repeat;background-color:#0b0a08;
+    box-shadow:0 0 0 1px rgba(216,181,106,.85),0 0 0 6px rgba(0,0,0,.14),0 24px 60px -10px rgba(0,0,0,.55);
+    opacity:0;scale:.55;transition:opacity 420ms cubic-bezier(.22,.61,.36,1),scale 620ms cubic-bezier(.22,.61,.36,1);will-change:transform}
+  .dd-loupe::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(120% 90% at 30% 20%,rgba(255,244,220,.16),rgba(255,244,220,0) 45%),radial-gradient(circle at 50% 50%,transparent 62%,rgba(0,0,0,.22) 100%)}
+  .dd-potm__media.is-loupe .dd-loupe{opacity:1;scale:1}
+}
+
+/* 0.11.6 Sizes: underline starts after the divider, under the word only */
+.dd-nav__sizes::after{left:clamp(16px,2vw,32px)}
+@media (max-width:1240px) and (min-width:1101px){.dd-nav__sizes::after{left:16px}}
+
+/* 0.11.7 Promise strip: a slow band of gold light travels across the words, left to right, every few seconds */
+.dd-promise-strip li{background:linear-gradient(100deg,rgba(243,236,224,.72) 0 40%,#f7e2a8 50%,rgba(243,236,224,.72) 60% 100%) 0% 0/280% 100% no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent}
+.dd-promise-strip.is-in li,html:not(.dd-js) .dd-promise-strip li{animation:ddSheen 9s cubic-bezier(.45,0,.25,1) infinite;animation-delay:calc(1.8s + var(--i,0) * .42s)}
+@keyframes ddSheen{0%{background-position:100% 0}24%,100%{background-position:0% 0}}
+@media (prefers-reduced-motion:reduce){.dd-promise-strip li{animation:none!important}}
+
+/* ---------- 0.12.0 Opening light switch (client 26/11): black plate, fine gold edge, rocker. Nothing else on the screen. ---------- */
+.dd-intro-curtain .dd-curtain__skip{display:none}
+.dd-ws{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;pointer-events:none}
+.dd-ws::before{content:"";position:absolute;left:50%;top:50%;width:520px;height:520px;margin:-300px 0 0 -260px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,196,120,.15),rgba(255,170,90,.05) 55%,transparent);opacity:0;transition:opacity 1800ms var(--dd-ease);animation:dd-ws-breathe 4.5s ease-in-out infinite}
+@keyframes dd-ws-breathe{0%,100%{transform:scale(.94)}50%{transform:scale(1.05)}}
+.dd-intro-curtain.is-awake .dd-ws::before{opacity:1}
+.dd-ws__switch{position:relative;pointer-events:auto;appearance:none;border:0;padding:0;margin:0;background:none;cursor:pointer;border-radius:14px;
+  opacity:0;transform:translateY(8px) scale(.98);transition:opacity 1400ms var(--dd-ease) 300ms,transform 1400ms var(--dd-ease) 300ms}
+.dd-intro-curtain.is-awake .dd-ws__switch{opacity:1;transform:none}
+.dd-ws__switch:focus{outline:none}
+.dd-ws__switch:focus-visible{box-shadow:0 0 0 2px #000,0 0 0 4px var(--dd-champ)}
+.dd-ws__plate{position:relative;display:block;width:120px;height:120px;border-radius:12px;background:linear-gradient(160deg,#1c1813,#060504);
+  box-shadow:inset 0 0 0 1px rgba(223,194,121,.55),0 18px 40px rgba(0,0,0,.9),0 0 60px rgba(255,190,110,.12);transition:box-shadow 500ms var(--dd-ease)}
+.dd-ws__switch:hover .dd-ws__plate,.dd-ws__switch:focus-visible .dd-ws__plate{box-shadow:inset 0 0 0 1px rgba(240,228,164,.9),0 18px 40px rgba(0,0,0,.9),0 0 90px rgba(255,200,120,.3)}
+.dd-ws__rocker{position:absolute;left:50%;top:50%;width:46px;height:68px;margin:-34px 0 0 -23px;border-radius:8px;perspective:240px}
+.dd-ws__face{position:absolute;inset:0;border-radius:8px;background:linear-gradient(#0c0a08,#1d1812 50%,#0c0a08);
+  box-shadow:inset 0 0 0 1px rgba(191,156,86,.45),0 6px 10px rgba(0,0,0,.7);transform:rotateX(-14deg);transition:transform 240ms cubic-bezier(.3,1.6,.5,1)}
+.dd-ws__switch:hover .dd-ws__face{transform:rotateX(-6deg)}
+.dd-ws__dot{position:absolute;left:50%;top:12px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#5a4a2c;transition:background 300ms,box-shadow 300ms}
+.dd-intro-curtain.is-switched .dd-ws__face{transform:rotateX(14deg)}
+.dd-intro-curtain.is-switched .dd-ws__dot{background:var(--dd-champ);box-shadow:0 0 10px 2px rgba(255,214,150,.9)}
+.dd-ws__bloom{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side,rgba(255,236,190,.9),rgba(255,190,110,.35) 50%,transparent)}
+.dd-intro-curtain.is-switched .dd-ws__bloom{animation:dd-ws-bloom 900ms var(--dd-ease) forwards}
+@keyframes dd-ws-bloom{0%{opacity:0;transform:scale(.4)}35%{opacity:1}100%{opacity:0;transform:scale(9)}}
+.dd-ws__label{margin:0;font:italic 400 clamp(22px,2.3vw,30px) var(--dd-serif);color:var(--dd-gold-text);letter-spacing:.02em;text-shadow:0 0 18px rgba(255,190,110,.25);
+  opacity:0;transform:translateY(8px);transition:opacity 1400ms var(--dd-ease) 900ms,transform 1400ms var(--dd-ease) 900ms}
+.dd-intro-curtain.is-awake .dd-ws__label{opacity:1;transform:none}
+.dd-intro-curtain.is-switched-out .dd-ws__switch,.dd-intro-curtain.is-switched-out .dd-ws__label,.dd-intro-curtain.is-go .dd-ws__switch,.dd-intro-curtain.is-go .dd-ws__label{opacity:0;transition:opacity 450ms ease-out;transition-delay:0ms}
+.dd-intro-curtain.is-switched-out .dd-ws::before,.dd-intro-curtain.is-go .dd-ws::before{opacity:0;transition:opacity 500ms ease-out}
+.dd-intro-curtain.is-switched .dd-ws__switch{pointer-events:none}
+.dd-feat__switch{display:none!important}

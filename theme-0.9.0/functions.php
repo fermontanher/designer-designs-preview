@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DD_VERSION', '0.9.0' );
+define( 'DD_VERSION', '0.11.9' );
 define( 'DD_URI', get_template_directory_uri() );
 define( 'DD_DIR', get_template_directory() );
 
@@ -180,3 +180,44 @@ add_filter( 'body_class', function ( $classes ) {
 	$classes[] = 'dd-cols-' . ( '2' === (string) $cols ? '2' : '3' );
 	return $classes;
 } );
+
+// Always three similar pieces: top up from the rest of the shop when a category is still small.
+add_filter( 'woocommerce_related_products', function ( $ids, $product_id ) {
+	$ids = array_values( array_diff( array_map( 'intval', (array) $ids ), array( (int) $product_id ) ) );
+	if ( count( $ids ) >= 3 ) {
+		return array_slice( $ids, 0, 3 );
+	}
+	$more = wc_get_products( array( 'status' => 'publish', 'limit' => 6, 'return' => 'ids', 'exclude' => array_merge( $ids, array( (int) $product_id ) ), 'orderby' => 'rand' ) );
+	return array_slice( array_merge( $ids, $more ), 0, 3 );
+}, 20, 2 );
+
+// One-off (24/11): platters became their own collection, so the bowls note no longer mentions them.
+add_action( 'init', function () {
+	if ( get_option( 'dd_0910_notes' ) ) {
+		return;
+	}
+	$bowls = get_term_by( 'slug', 'bowls-platters', 'product_cat' );
+	if ( $bowls ) {
+		update_term_meta( $bowls->term_id, 'dd_note', 'Sculptural display bowls' );
+	}
+	update_option( 'dd_0910_notes', 1, false );
+} );
+
+// Client 24/11: the three similar pieces sit beside the basket ("Add a little extra", as on Cox & Cox), so no second grid at the bottom. (dd_no_bottom_related)
+add_action( 'wp', function () {
+	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
+	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+} );
+
+/* 0.11.0 Home sections: piece of the month, studio image, reviews (real Etsy reviews only). */
+add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
+	$c->add_section( 'dd_home_sections', array( 'title' => __( 'Home sections', 'designer-designs' ), 'panel' => 'dd_panel', 'priority' => 5 ) );
+	$c->add_setting( 'dd_potm', array( 'default' => 672, 'sanitize_callback' => 'absint' ) );
+	$c->add_control( 'dd_potm', array( 'label' => __( 'Piece of the month (product ID)', 'designer-designs' ), 'section' => 'dd_home_sections', 'type' => 'number' ) );
+	$c->add_setting( 'dd_potm_text', array( 'default' => '', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$c->add_control( 'dd_potm_text', array( 'label' => __( 'Piece of the month text (empty = product short description)', 'designer-designs' ), 'section' => 'dd_home_sections', 'type' => 'textarea' ) );
+	$c->add_setting( 'dd_studio_img', array( 'default' => 768, 'sanitize_callback' => 'absint' ) );
+	$c->add_control( new WP_Customize_Media_Control( $c, 'dd_studio_img', array( 'label' => __( 'From the studio image', 'designer-designs' ), 'section' => 'dd_home_sections', 'mime_type' => 'image' ) ) );
+	$c->add_setting( 'dd_home_reviews', array( 'default' => '', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$c->add_control( 'dd_home_reviews', array( 'label' => __( 'Reviews (real Etsy reviews only)', 'designer-designs' ), 'description' => __( 'One per line: quote | name | place. The section stays hidden while this is empty.', 'designer-designs' ), 'section' => 'dd_home_sections', 'type' => 'textarea' ) );
+}, 30 );
